@@ -1,0 +1,8 @@
+The index.html file is a facebook newsfeed page
+
+1.The header of the page is fixed.
+2.The body of the pagr is divided into a four subpart section1,   section2, section3, section4 .
+3.section1 - dashboard column, 
+  section2 - newsfeed content column,
+  section3 - your page column, 
+  section4 - instant games and contact column.
