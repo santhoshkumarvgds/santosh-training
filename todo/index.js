@@ -57,9 +57,13 @@ class Todos extends React.Component {
     event.preventDefault();
     var taskArray = this.state.tasks;
     var newTaskInput = this.refs.newTask.value;
-    taskArray.push(newTaskInput);
-    this.setState({ tasks: taskArray });
-    this.refs.newTask.value = "";
+    console.log(newTaskInput);
+    if(newTaskInput!=null && newTaskInput != ""){
+        taskArray.push(newTaskInput);
+      this.setState({ tasks: taskArray });
+      this.refs.newTask.value = "";
+    }
+    
   }
   removeTask(name, i) {
     var tasks = this.state.tasks.slice();
@@ -84,7 +88,10 @@ class Todos extends React.Component {
 }
 function Glogin(){
   return(
-     <div className="googleLogin">
+    <div>
+    <div className="header">
+             <h3>TODO List</h3>
+     <div>
   <GoogleLogin
     clientId="278491810500-5a0t3984vlsuk04j6f30ktth3du0ag77.apps.googleusercontent.com"
     buttonText="Sign in with google"
@@ -92,6 +99,9 @@ function Glogin(){
     onFailure={responseGoogle}
     cookiePolicy={'single_host_origin'}
   />
+  </div>
+  </div>
+  <p>After sign in create your TODO</p>
   </div>
   )
 } 
