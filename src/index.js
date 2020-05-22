@@ -1,5 +1,3 @@
-//handlers
-const { getSignup, getLogin } = require("./routes/handler");
 
 //signup
 const { signup } = require("./routes/sigup");
@@ -20,7 +18,5 @@ app.use(
   })
 );
 app.post("/login", login);
-app.post("/sign_up", signup);
-app.get("/", getLogin);
-app.get("/signup", getSignup);
+app.post("/signup", signup);
 app.listen(port, () => console.log(`started https://loacalhost:${port}`));

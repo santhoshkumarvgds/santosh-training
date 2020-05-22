@@ -1,13 +1,8 @@
+const {users} = require("./db");
 const jwt = require("jsonwebtoken");
 const jwtKey = "sAnThOsHkUmAr"; //my_secret_key
-const { Pool, Client } = require("pg"); //postgres
-const dbconn = new Pool({
-  user: "postgres",
-  password: "postgres",
-  host: "localhost",
-  port: 5432,
-  database: "postgres",
-});
+const crypto = require("crypto");
+const Sequelize = require("sequelize");
 
 const signup = async (req, res) => {
   //   console.log("checking");
@@ -17,36 +12,34 @@ const signup = async (req, res) => {
   var isRole = req.body.role;
   var pendingRequest = "true";
   var token = "null";
-  var check;
+  var mykey = crypto.createCipher("aes-128-cbc", "sAnThOsH");
+  var crypass = mykey.update(pass, "utf8", "hex");
+  crypass += mykey.final("hex");
   if (isRole == "User") {
     pendingRequest = "false";
-    token = jwt.sign({ name, email, pass, isRole, pendingRequest }, jwtKey, {
+    token = jwt.sign({ name, email, crypass, isRole, pendingRequest }, jwtKey, {
       algorithm: "HS256",
     });
   }
-
-  dbconn.query(
-    "select email from person where email=($1)",
-    [email],
-    (err, ress) => {
-      if (err) throw err;
-      try {
-        check = ress.rows[0].email;
-        console.log(check + " this email is already taken");
-      } catch {
-        dbconn.query(
-          "insert into person(name,email,pass,isrole,pending_request,token)values($1,$2,$3,$4,$5,$6)",
-          [name, email, pass, isRole, pendingRequest, token],
-          (err, response) => {
-            if (err) throw err;
-            console.log(email + " sign up successful");
-          }
-        );
-        //   console.log(pendingRequest);
-        res.redirect("/");
-      }
-    }
-  );
+  // console.log("database connection success");
+  try {
+    var dbEmail = await users.findOne({
+        where:{email:email},
+        attributes : ['email']
+    });
+    console.log(dbEmail.email + " this email is already taken");
+  } catch (e) {
+    // console.log(e);
+    var dbInsert = await users.create({
+      name: name,
+      email: email,
+      pass: pass,
+      isrole: isRole,
+      pending_request: pendingRequest,
+      token: token,
+    });
+    console.log(email + " sign up successful");
+  }
 };
 
 module.exports = {
