@@ -27,7 +27,7 @@ const signup = async (req, res) => {
         where:{email:email},
         attributes : ['email']
     });
-    console.log(dbEmail.email + " this email is already taken");
+    re.status(200).send(dbEmail.email + " this email is already taken");
   } catch (e) {
     // console.log(e);
     var dbInsert = await users.create({
@@ -38,7 +38,7 @@ const signup = async (req, res) => {
       pending_request: pendingRequest,
       token: token,
     });
-    console.log(email + " sign up successful");
+    res.status(200).send(email + " sign up successful");
   }
 };
 

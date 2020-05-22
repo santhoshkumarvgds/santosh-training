@@ -3,7 +3,7 @@
 const { signup } = require("./routes/sigup");
 
 //login
-const { login } = require("./routes/login");
+const { login , validation ,getInfo } = require("./routes/login");
 
 const express = require("express");
 const app = express();
@@ -19,4 +19,6 @@ app.use(
 );
 app.post("/login", login);
 app.post("/signup", signup);
+app.post("/validation",validation);
+app.post("/getinfo",getInfo);
 app.listen(port, () => console.log(`started https://loacalhost:${port}`));
