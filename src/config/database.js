@@ -12,17 +12,44 @@ const users = sequelize.define(
   {
     name: Sequelize.STRING,
     email: Sequelize.STRING,
-    pass: Sequelize.STRING,
-    isrole: Sequelize.STRING,
+    password: Sequelize.STRING,
+    pendingrequest: Sequelize.STRING,
   },
   {
-    tableName: "person",
+    tableName: "usertable",
     timestamps: false,
   }
 );
+
+const userrole = sequelize.define(
+  "userrole",
+  {
+    role: Sequelize.STRING,
+    email: Sequelize.STRING,
+  },
+  {
+    tableName: "userrole",
+    timestamps: false,
+  }
+);
+
+const userPermission = sequelize.define(
+  "permission",
+  {
+    permission: Sequelize.STRING,
+    email: Sequelize.STRING,
+  },
+  {
+    tableName: "permission",
+    timestamps: false,
+  }
+);
+
 users.removeAttribute("id");
+userrole.removeAttribute("id");
 
 //exports
 module.exports={
-    users : users
+    users : users,
+    userrole : userrole
 }

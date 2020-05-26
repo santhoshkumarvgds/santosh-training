@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 //local module
 const {users} = require("../config/database.js");
-
+const {userrole} = require("../config/database.js");
 
 
 const jwtKey = "sAnThOsHkUmAr"; //my_secret_key
@@ -33,21 +33,24 @@ router.post("/signup", async (req, res, next) => {
       } else {
         var isRole = req.body.role;
         var pendingRequest = "true";
-        var token = "null";
 
         try {
+          console.log("hi");
           var dbInsert = await users.create({
             name: req.body.name,
             email: req.body.email,
-            pass: hash,
-            isrole: isRole,
-            pending_request: pendingRequest,
-            token: token,
+            password: hash,
+            pendingrequest: pendingRequest
+          });
+          var dbUserRoleInsert =await userrole.create({
+              role : req.body.role,
+              email : req.body.email,
           });
           res.status(200).json({
             status: "success",
           });
         } catch (e) {
+          console.log(e);
           res.status(500).json({
             error: e,
           });
@@ -59,23 +62,29 @@ router.post("/signup", async (req, res, next) => {
 
 //login
 router.post("/login", async (req, res, next) => {
-    console.log(req.body.email);
+    //  console.log(req.body.email);
   try {
-    const db = await users.findOne({
+    const dbUser = await users.findOne({
       where: { email: req.body.email },
-      attributes: ["email", "pass", "isrole"],
+      attributes: ["email", "password"],
     });
-    if (db.email) {
-      bcrypt.compare(req.body.password, db.pass, (err, result) => {
+    // console.log(dbUser.email);
+    const dbUserRole = await userrole.findOne({
+      where: { email: req.body.email },
+      attributes: ["role"],
+    });
+    console.log(dbUserRole.role);
+    if (dbUser.email) {
+      bcrypt.compare(req.body.password, dbUser.password, (err, result) => {
         if (err) {
           return res.status(401).json({
             message: "password mismatch",
           });
         }
         if (result) {
-          if (db.isrole == "User") {
-            var jwtEmail = db.email;
-            var jwtRole = db.isrole;
+          if (dbUserRole.role== "User") {
+            var jwtEmail = dbUser.email;
+            var jwtRole = dbUserRole.role;
             const token = jwt.sign({ jwtEmail, jwtRole }, jwtKey, {
               algorithm: "HS256",
               expiresIn: "1h",
