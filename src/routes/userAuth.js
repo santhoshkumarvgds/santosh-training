@@ -35,20 +35,25 @@ router.post("/signup", async (req, res, next) => {
         var pendingRequest = "true";
 
         try {
-          console.log("hi");
-          var dbInsert = await users.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: hash,
-            pendingrequest: pendingRequest
+          if(isRole=="User" || isRole=="Admin" || isRole=="Seller"){
+            var dbInsert = await users.create({
+              name: req.body.name,
+              email: req.body.email,
+              password: hash,
+              pendingrequest: pendingRequest
+            });
+            var dbUserRoleInsert =await userrole.create({
+                role : req.body.role,
+                email : req.body.email,
+            });
+            res.status(200).json({
+              status: "success",
+            });
+        }else{
+          res.status(401).json({
+            message: "Role mismatch",
           });
-          var dbUserRoleInsert =await userrole.create({
-              role : req.body.role,
-              email : req.body.email,
-          });
-          res.status(200).json({
-            status: "success",
-          });
+        }
         } catch (e) {
           console.log(e);
           res.status(500).json({
