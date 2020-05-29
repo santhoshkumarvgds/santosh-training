@@ -13,7 +13,6 @@ const users = sequelize.define(
     name: Sequelize.STRING,
     email: Sequelize.STRING,
     password: Sequelize.STRING,
-    pendingrequest: Sequelize.STRING,
   },
   {
     tableName: "usertable",
@@ -24,8 +23,9 @@ const users = sequelize.define(
 const userrole = sequelize.define(
   "userrole",
   {
-    role: Sequelize.STRING,
     email: Sequelize.STRING,
+    role: Sequelize.STRING,
+    pendingrequest: Sequelize.STRING,
   },
   {
     tableName: "userrole",

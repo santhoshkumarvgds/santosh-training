@@ -25,7 +25,7 @@ router.post("/signup", async (req, res, next) => {
     }
   } catch (e) {
     // console.log(req.body.name);
-    console.log(req.body.role);
+    // console.log(req.body.role);
     bcrypt.hash(req.body.password, 10, async (err, hash) => {
       if (err) {
         return res.json({
@@ -34,18 +34,18 @@ router.post("/signup", async (req, res, next) => {
       } else {
         var isRole = req.body.role;
         var pendingRequest = "true";
-
+        if (isRole == "User") pendingRequest = "false";
         try {
           if (isRole == "User" || isRole == "Admin" || isRole == "Seller") {
             var dbInsert = await users.create({
               name: req.body.name,
               email: req.body.email,
               password: hash,
-              pendingrequest: pendingRequest,
             });
             var dbUserRoleInsert = await userrole.create({
-              role: req.body.role,
               email: req.body.email,
+              role: req.body.role,
+              pendingrequest: pendingRequest,
             });
             res.json({
               message: "success",
@@ -62,7 +62,7 @@ router.post("/signup", async (req, res, next) => {
         } catch (e) {
           console.log(e);
           res.json({
-            error: "error",
+            message: "error",
           });
         }
       }
@@ -80,9 +80,9 @@ router.post("/login", async (req, res, next) => {
     // console.log(dbUser.email);
     const dbUserRole = await userrole.findOne({
       where: { email: req.body.email },
-      attributes: ["role"],
+      attributes: ["role", "pendingrequest"],
     });
-    // console.log(dbUserRole.role);
+    //  console.log(dbUserRole.pendingrequest);
     if (dbUser.email) {
       bcrypt.compare(req.body.password, dbUser.password, (err, result) => {
         if (err) {
@@ -91,7 +91,7 @@ router.post("/login", async (req, res, next) => {
           });
         }
         if (result) {
-          if (dbUserRole.role == "User") {
+          if (dbUserRole.pendingrequest == "false") {
             var jwtEmail = dbUser.email;
             var jwtName = dbUser.name;
             var jwtRole = dbUserRole.role;
@@ -103,11 +103,13 @@ router.post("/login", async (req, res, next) => {
               message: "success",
               token: token,
               role: dbUserRole.role,
+              pendingrequest: dbUserRole.pendingrequest,
             });
           } else {
             return res.json({
               message: "Approvel pending",
               role: dbUserRole.role,
+              pendingrequest: dbUserRole.pendingrequest,
             });
           }
         }

@@ -5,6 +5,7 @@ import Signup from "./auth/signup";
 import history from "./history";
 import Pendingapprovel from "./home/pending-approvel";
 import UserHome from "./home/user-Home";
+import SellerHome from "./home/seller-Home";
 
 const NoMatch = (props) => {
   return <div>404</div>;
@@ -29,8 +30,10 @@ class App extends React.Component {
             render={() =>
               localStorage.role == "User" ? (
                 <Redirect to="/user" />
-              ) : localStorage.role == "Seller" ? (
+              ) : localStorage.pendingrequest == "true" ? (
                 <Pendingapprovel />
+              ) : localStorage.role == "Seller" ? (
+                <Redirect to="/seller" />
               ) : (
                 <Redirect to="/" />
               )
@@ -42,8 +45,25 @@ class App extends React.Component {
             render={() =>
               localStorage.role == "User" ? (
                 <UserHome />
-              ) : localStorage.role == "Seller" ? (
+              ) : localStorage.pendingrequest == "true" ? (
                 <Redirect to="/pendingapprovel" />
+              ) : localStorage.role == "Seller" ? (
+                <Redirect to="/seller" />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/seller"
+            render={() =>
+              localStorage.role == "User" ? (
+                <Redirect to="/user" />
+              ) : localStorage.pendingrequest == "true" ? (
+                <Redirect to="/pendingapprovel" />
+              ) : localStorage.role == "Seller" ? (
+                <SellerHome />
               ) : (
                 <Redirect to="/" />
               )

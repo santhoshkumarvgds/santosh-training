@@ -35,7 +35,7 @@ export default class Signup extends React.Component {
     const body = await response.json();
     // console.log(body);
     // console.log(response.status);
-    if (body.message == "success") {
+    if (body.message == "success" && body.role == "User") {
       // localStorage.clear();
       // console.log(localStorage);
       localStorage.setItem("token", body.token);
@@ -43,14 +43,19 @@ export default class Signup extends React.Component {
       // localStorage.setItem("count",1);
       // alert(localStorage.role);
       history.push("/user");
-    } else if (body.message == "Approvel pending") {
+    }else if (body.message == "Approvel pending") {
       // localStorage.clear();
       // alert("Role " + localStorage.role);
       localStorage.setItem("role", body.role);
+      localStorage.setItem("pendingrequest", body.pendingrequest);
       // alert("Role " + localStorage.role);
       // localStorage.setItem("count", 1);
       history.push("/pendingapprovel");
-    } else {
+    } else if (body.message == "success" && body.role == "Seller") {
+      localStorage.setItem("token", body.token);
+      localStorage.setItem("role", body.role);
+      history.push("/seller");
+    }  else {
       alert(body.message);
     }
   }

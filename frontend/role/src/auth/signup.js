@@ -10,7 +10,7 @@ export default class Signup extends React.Component {
       name: "",
       email: "",
       password: "",
-      role: "User",
+      role: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,10 +35,9 @@ export default class Signup extends React.Component {
           name: name[0],
           email: email[0],
           password: password[0],
-          role: role,
+          role: role[0],
         }),
-      },
-      { withCredentials: true }
+      }
     );
     // console.log(response);
     const body = await response.json();
@@ -96,6 +95,7 @@ export default class Signup extends React.Component {
               name="role"
               onChange={this.handleChange}
             >
+              <option value="Select">Select</option>
               <option value="User">User</option>
               <option value="Seller">Seller</option>
             </select>
