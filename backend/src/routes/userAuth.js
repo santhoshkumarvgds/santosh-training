@@ -6,9 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 //local module
-const {users} = require("../config/database.js");
-const {userrole} = require("../config/database.js");
-
+const { users } = require("../config/database.js");
+const { userrole } = require("../config/database.js");
 
 const jwtKey = "sAnThOsHkUmAr"; //my_secret_key
 
@@ -20,44 +19,50 @@ router.post("/signup", async (req, res, next) => {
       attributes: ["email"],
     });
     if (dbEmail.email) {
-      res.status(409).json({
+      res.json({
         message: "Mail exists",
       });
     }
   } catch (e) {
+    // console.log(req.body.name);
+    console.log(req.body.role);
     bcrypt.hash(req.body.password, 10, async (err, hash) => {
       if (err) {
-        return res.status(500).json({
-          error: err,
+        return res.json({
+          message: "error",
         });
       } else {
         var isRole = req.body.role;
         var pendingRequest = "true";
 
         try {
-          if(isRole=="User" || isRole=="Admin" || isRole=="Seller"){
+          if (isRole == "User" || isRole == "Admin" || isRole == "Seller") {
             var dbInsert = await users.create({
               name: req.body.name,
               email: req.body.email,
               password: hash,
-              pendingrequest: pendingRequest
+              pendingrequest: pendingRequest,
             });
-            var dbUserRoleInsert =await userrole.create({
-                role : req.body.role,
-                email : req.body.email,
+            var dbUserRoleInsert = await userrole.create({
+              role: req.body.role,
+              email: req.body.email,
             });
-            res.status(200).json({
-              status: "success",
+            res.json({
+              message: "success",
+              name: req.body.name,
+              email: req.body.email,
+              password: req.body.password,
+              role: req.body.role,
             });
-        }else{
-          res.status(401).json({
-            message: "Role mismatch",
-          });
-        }
+          } else {
+            res.json({
+              message: "Role mismatch",
+            });
+          }
         } catch (e) {
           console.log(e);
-          res.status(500).json({
-            error: e,
+          res.json({
+            error: "error",
           });
         }
       }
@@ -67,59 +72,62 @@ router.post("/signup", async (req, res, next) => {
 
 //login
 router.post("/login", async (req, res, next) => {
-    //  console.log(req.body.email);
   try {
     const dbUser = await users.findOne({
       where: { email: req.body.email },
-      attributes: ["email", "password"],
+      attributes: ["email", "password", "name"],
     });
     // console.log(dbUser.email);
     const dbUserRole = await userrole.findOne({
       where: { email: req.body.email },
       attributes: ["role"],
     });
-    console.log(dbUserRole.role);
+    // console.log(dbUserRole.role);
     if (dbUser.email) {
       bcrypt.compare(req.body.password, dbUser.password, (err, result) => {
         if (err) {
-          return res.status(401).json({
+          return res.json({
             message: "password mismatch",
           });
         }
         if (result) {
-          if (dbUserRole.role== "User") {
+          if (dbUserRole.role == "User") {
             var jwtEmail = dbUser.email;
+            var jwtName = dbUser.name;
             var jwtRole = dbUserRole.role;
-            const token = jwt.sign({ jwtEmail, jwtRole }, jwtKey, {
+            const token = jwt.sign({ jwtName, jwtEmail, jwtRole }, jwtKey, {
               algorithm: "HS256",
               expiresIn: "1h",
             });
-            return res.status(200).json({
-              status: "success"
+            return res.json({
+              message: "success",
+              token: token,
+              role: dbUserRole.role,
             });
           } else {
-            return res.status(401).json({
+            return res.json({
               message: "Approvel pending",
+              role: dbUserRole.role,
             });
           }
         }
-        res.status(401).json({
-          message: "Auth failed",
+        res.json({
+          message: "Password not match",
         });
       });
     } else {
-      res.status(401).json({
+      res.json({
         message: "Mail not exists",
       });
     }
   } catch (e) {
-      console.log(e);
-    res.status(500).json({
-      error: e,
+    // console.log(e);
+    res.json({
+      message: "Mail not exists",
     });
   }
 });
 
 module.exports = {
-    userAuth : router
-}
+  userAuth: router,
+};

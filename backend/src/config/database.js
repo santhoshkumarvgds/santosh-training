@@ -37,7 +37,7 @@ const userPermission = sequelize.define(
   "permission",
   {
     permission: Sequelize.STRING,
-    email: Sequelize.STRING,
+    role: Sequelize.STRING,
   },
   {
     tableName: "permission",
@@ -47,6 +47,7 @@ const userPermission = sequelize.define(
 
 users.removeAttribute("id");
 userrole.removeAttribute("id");
+userPermission.removeAttribute("id");
 
 //exports
 module.exports={

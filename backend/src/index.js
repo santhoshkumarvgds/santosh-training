@@ -1,9 +1,11 @@
 //core module
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 4000;
 const bodyParser = require("body-parser");
 app.use(express.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
