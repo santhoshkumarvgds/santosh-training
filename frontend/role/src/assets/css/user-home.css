@@ -1,0 +1,36 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+.header {
+  color: white;
+  background-color: dodgerblue;
+  padding: 25px 30px;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+}
+.header h3,
+.header div,
+.log-out p {
+  display: inline-block;
+}
+.log-out {
+  float: right;
+}
+.header .log-out a {
+  background-color: #fff;
+  color: dodgerblue;
+  padding: 5px 10px;
+  margin-left: 20px;
+}
+.body {
+  text-align: center;
+  margin-top: 10px;
+}
+.body p {
+  color: dodgerblue;
+  margin-top: 10px;
+  font-size: 18px;
+}
