@@ -36,26 +36,30 @@ export default class Signup extends React.Component {
     // console.log(body);
     // console.log(response.status);
     if (body.message == "success" && body.role == "User") {
+      localStorage.setItem("token", body.token);
+      localStorage.setItem("redirect", "user");
+      history.push("/user");
       // localStorage.clear();
       // console.log(localStorage);
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("role", body.role);
+      // localStorage.setItem("role", body.role);
       // localStorage.setItem("count",1);
       // alert(localStorage.role);
-      history.push("/user");
-    }else if (body.message == "Approvel pending") {
+    } else if (body.message == "Approvel pending") {
+      localStorage.setItem("redirect", "pendingapprovel");
+      localStorage.setItem("pendingrequest", body.pendingrequest);
+      history.push("/pendingapprovel");
+
       // localStorage.clear();
       // alert("Role " + localStorage.role);
-      localStorage.setItem("role", body.role);
-      localStorage.setItem("pendingrequest", body.pendingrequest);
+      // localStorage.setItem("role", body.role);
       // alert("Role " + localStorage.role);
       // localStorage.setItem("count", 1);
-      history.push("/pendingapprovel");
     } else if (body.message == "success" && body.role == "Seller") {
       localStorage.setItem("token", body.token);
-      localStorage.setItem("role", body.role);
+      localStorage.setItem("redirect", "seller");
       history.push("/seller");
-    }  else {
+      // localStorage.setItem("role", body.role);
+    } else {
       alert(body.message);
     }
   }

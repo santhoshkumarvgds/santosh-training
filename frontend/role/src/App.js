@@ -21,52 +21,40 @@ class App extends React.Component {
           <Route exact path="/" component={Login} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          {/* <Route exact path="/userhome">
-            <Redirect to="/user" />
-          </Route> */}
           <Route
             exact
             path="/pendingapprovel"
-            render={() =>
-              localStorage.role == "User" ? (
-                <Redirect to="/user" />
-              ) : localStorage.pendingrequest == "true" ? (
-                <Pendingapprovel />
-              ) : localStorage.role == "Seller" ? (
-                <Redirect to="/seller" />
-              ) : (
-                <Redirect to="/" />
-              )
+            render={
+              () =>
+                localStorage.redirect == "pendingapprovel" ? (
+                  <Pendingapprovel />
+                ) : (
+                  <Redirect to={localStorage.redirect} />
+                )
             }
           />
           <Route
             exact
             path="/user"
-            render={() =>
-              localStorage.role == "User" ? (
-                <UserHome />
-              ) : localStorage.pendingrequest == "true" ? (
-                <Redirect to="/pendingapprovel" />
-              ) : localStorage.role == "Seller" ? (
-                <Redirect to="/seller" />
-              ) : (
-                <Redirect to="/" />
-              )
+            render={
+              () =>
+                localStorage.redirect == "user" ? (
+                  <UserHome />
+                ) : (
+                  <Redirect to={localStorage.redirect} />
+                )
             }
           />
           <Route
             exact
             path="/seller"
-            render={() =>
-              localStorage.role == "User" ? (
-                <Redirect to="/user" />
-              ) : localStorage.pendingrequest == "true" ? (
-                <Redirect to="/pendingapprovel" />
-              ) : localStorage.role == "Seller" ? (
-                <SellerHome />
-              ) : (
-                <Redirect to="/" />
-              )
+            render={
+              () =>
+                localStorage.redirect == "seller" ? (
+                  <SellerHome />
+                ) : (
+                  <Redirect to={localStorage.redirect} />
+                ) 
             }
           />
 
