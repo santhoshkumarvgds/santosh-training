@@ -4,6 +4,7 @@ import Login from "./auth/login";
 import Signup from "./auth/signup";
 import history from "./history";
 import Pendingapprovel from "./home/pending-approvel";
+import AdminHome from "./home/admin-Home";
 import UserHome from "./home/user-Home";
 import SellerHome from "./home/seller-Home";
 
@@ -21,40 +22,49 @@ class App extends React.Component {
           <Route exact path="/" component={Login} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
+
           <Route
             exact
-            path="/pendingapprovel"
-            render={
-              () =>
-                localStorage.redirect == "pendingapprovel" ? (
-                  <Pendingapprovel />
-                ) : (
-                  <Redirect to={localStorage.redirect} />
-                )
+            path="/admin"
+            render={() =>
+              localStorage.redirect == "admin" ? (
+                <AdminHome />
+              ) : (
+                <Redirect to={localStorage.redirect} />
+              )
             }
           />
           <Route
             exact
             path="/user"
-            render={
-              () =>
-                localStorage.redirect == "user" ? (
-                  <UserHome />
-                ) : (
-                  <Redirect to={localStorage.redirect} />
-                )
+            render={() =>
+              localStorage.redirect == "user" ? (
+                <UserHome />
+              ) : (
+                <Redirect to={localStorage.redirect} />
+              )
             }
           />
           <Route
             exact
             path="/seller"
-            render={
-              () =>
-                localStorage.redirect == "seller" ? (
-                  <SellerHome />
-                ) : (
-                  <Redirect to={localStorage.redirect} />
-                ) 
+            render={() =>
+              localStorage.redirect == "seller" ? (
+                <SellerHome />
+              ) : (
+                <Redirect to={localStorage.redirect} />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/pendingapprovel"
+            render={() =>
+              localStorage.redirect == "pendingapprovel" ? (
+                <Pendingapprovel />
+              ) : (
+                <Redirect to={localStorage.redirect} />
+              )
             }
           />
 

@@ -12,10 +12,16 @@ app.use(bodyParser.json());
 
 //local module
 const {userAuth} = require("./routes/userAuth");
-const {getinfo} = require("./routes/getinfo");
+const { getinfo } = require("./routes/getinfo");
+const { pendingapprovel } = require("./routes/pendingApprovel");
+const { acceptReject } = require("./routes/acceptRejectUser");
 
 app.use("/user", userAuth);
 
-app.use("/user",getinfo);
+app.use("/user", getinfo);
+
+app.use("/user", pendingapprovel);
+
+app.use("/user", acceptReject);
 
 app.listen(port, () => console.log(`started https://loacalhost:${port}`));

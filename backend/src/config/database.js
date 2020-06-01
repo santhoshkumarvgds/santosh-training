@@ -26,6 +26,7 @@ const userrole = sequelize.define(
     email: Sequelize.STRING,
     role: Sequelize.STRING,
     pendingrequest: Sequelize.STRING,
+    status : Sequelize.STRING,
   },
   {
     tableName: "userrole",

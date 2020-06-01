@@ -1,6 +1,6 @@
 import React from "react";
 import history from "../history";
-import "../assets/css/user-home.css";
+import "../assets/css/home.css";
 
 class UserHome extends React.Component {
   constructor() {
@@ -40,10 +40,10 @@ class UserHome extends React.Component {
     return (
       <div>
         <div className="header">
-          <h3>Codingmart</h3>
-          <div className="log-out">
-            <p onClick={this.getInfo}>Get info</p>
-            <a onClick={this.handleLogout}>Logout</a>
+          <h3>Codingmart  ||  User</h3>
+          <div className="right">
+            <a onClick={this.getInfo}>Get info</a>
+            <a className="logout-btn"onClick={this.handleLogout}>Logout</a>
           </div>
         </div>
         <div className="body">

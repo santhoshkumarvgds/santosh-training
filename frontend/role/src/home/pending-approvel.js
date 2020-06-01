@@ -5,12 +5,7 @@ class PendingApprovel extends React.Component {
   constructor() {
     super();
   }
-  // componentWillMount() {
-  //   if (localStorage.count == 1) {
-  //     window.location.reload();
-  //   }
-  //   localStorage.setItem("count", 2);
-  // }
+
   render() {
     return (
       <div className="section">

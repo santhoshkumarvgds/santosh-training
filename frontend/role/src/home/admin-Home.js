@@ -1,16 +1,19 @@
 import React from "react";
 import history from "../history";
 import "../assets/css/home.css";
+import PendingRequestList from "../component/pendingRequestList";
 
-class SellerHome extends React.Component {
+class AdminHome extends React.Component {
   constructor() {
     super();
     this.state = {
       name: "",
       email: "",
       role: "",
+      user: "",
     };
   }
+
   getInfo = async () => {
     const response = await fetch("http://localhost:4000/user/getinfo", {
       method: "post",
@@ -20,6 +23,7 @@ class SellerHome extends React.Component {
       }),
     });
     const body = await response.json();
+    console.log(body);
     this.setState({
       name: body.name,
       email: body.email,
@@ -35,7 +39,7 @@ class SellerHome extends React.Component {
     return (
       <div>
         <div className="header">
-          <h3>Codingmart || Seller</h3>
+          <h3>Codingmart || Admin</h3>
           <div className="right">
             <a onClick={this.getInfo}>Get info</a>
             <a className="logout-btn" onClick={this.handleLogout}>
@@ -47,10 +51,12 @@ class SellerHome extends React.Component {
           <p>{this.state.name}</p>
           <p>{this.state.email}</p>
           <p>{this.state.role}</p>
+          <p>{this.state.user}</p>
+          <PendingRequestList />
         </div>
       </div>
     );
   }
 }
 
-export default SellerHome;
+export default AdminHome;
