@@ -46,8 +46,6 @@ const PendingRequstList = () => {
         email: email,
       })
     });
-    const a="a";
-    setUser(a);
     }catch(error){
       console.log(error);
     }
