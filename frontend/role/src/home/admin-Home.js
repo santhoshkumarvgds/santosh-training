@@ -1,7 +1,8 @@
 import React from "react";
 import history from "../history";
 import "../assets/css/home.css";
-import PendingRequestList from "../component/pendingRequestList";
+import PendingRequstList from "../component/pendingRequestList";
+import AddAdmin from "../component/addAdmin";
 
 class AdminHome extends React.Component {
   constructor() {
@@ -28,20 +29,53 @@ class AdminHome extends React.Component {
       name: body.name,
       email: body.email,
       role: body.role,
+      render: "",
     });
   };
   handleLogout() {
     localStorage.clear();
     history.push("/");
   }
-
+  handleClick(compName) {
+    this.setState({
+      render: compName,
+    });
+  }
+  renderComp() {
+    switch (this.state.render) {
+      case "pendingUser":
+        return <PendingRequstList />;
+      case "addAdmin":
+        return <AddAdmin />;
+    }
+  }
   render() {
     return (
       <div>
         <div className="header">
           <h3>Codingmart || Admin</h3>
           <div className="right">
-            <a onClick={this.getInfo}>Get info</a>
+            <a
+              onClick={() => {
+                this.getInfo();
+              }}
+            >
+              Get Info
+            </a>
+            <a
+              onClick={() => {
+                this.handleClick("addAdmin");
+              }}
+            >
+              Add Admin
+            </a>
+            <a
+              onClick={() => {
+                this.handleClick("pendingUser");
+              }}
+            >
+              Pending user
+            </a>
             <a className="logout-btn" onClick={this.handleLogout}>
               Logout
             </a>
@@ -52,7 +86,7 @@ class AdminHome extends React.Component {
           <p>{this.state.email}</p>
           <p>{this.state.role}</p>
           <p>{this.state.user}</p>
-          <PendingRequestList />
+          {this.renderComp()}
         </div>
       </div>
     );

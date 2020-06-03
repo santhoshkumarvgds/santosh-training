@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import history from "../history";
 import "../index.css";
 
-export default class Signup extends React.Component {
+export default class AddAdmin extends React.Component {
   constructor() {
     super();
     this.state = {
+      name: "",
       email: "",
       password: "",
+      role: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -18,38 +19,27 @@ export default class Signup extends React.Component {
       [e.target.name]: [e.target.value],
     });
   }
+
   async handleSubmit(e) {
-    localStorage.clear();
     e.preventDefault();
-    const { email, password } = this.state;
-    // console.log(name);
-    const response = await fetch("http://localhost:4000/user/login", {
+    const { name, email, password, role } = this.state;
+    console.log(name);
+    const response = await fetch("http://localhost:4000/user/signup", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        name: name[0],
         email: email[0],
         password: password[0],
+        role: role[0],
       }),
     });
+    // console.log(response);
     const body = await response.json();
-    if (body.message == "success" && body.role == "User") {
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("redirect", "user");
-      history.push("/user");
-    } else if (body.message == "success" && body.role == "Admin") {
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("redirect", "admin");
-      history.push("/admin");
-    } else if (body.message == "success" && body.role == "Seller") {
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("redirect", "seller");
-      history.push("/seller");
-    } else if (body.message == "Approvel pending" && body.status != "reject") {
-      localStorage.setItem("redirect", "pendingapprovel");
-      localStorage.setItem("pendingrequest", body.pendingrequest);
-      history.push("/pendingapprovel");
-    }else if(body.message == "Approvel pending" && body.status == "reject"){
-      alert("You're rejected by Admin!!!");
+    if (body.message == "Mail exists") {
+      alert("Mail exists");
+    } else if (body.message == "success") {
+      alert("successfully Added");
     } else {
       alert(body.message);
     }
@@ -60,13 +50,25 @@ export default class Signup extends React.Component {
       <div className="section">
         <div className="form">
           <form onSubmit={this.handleSubmit}>
-            <h1>LOG IN</h1>
+            <h1>Add Admin</h1>
+
+            <input
+              className="box"
+              type="text"
+              name="name"
+              value={this.state.name}
+              placeholder="Name"
+              required
+              onChange={this.handleChange}
+            />
+            <br />
+
             <input
               className="box"
               type="email"
               name="email"
               value={this.state.email}
-              placeholder="E-Mail"
+              placeholder="E-Mail "
               required
               onChange={this.handleChange}
             />
@@ -77,10 +79,20 @@ export default class Signup extends React.Component {
               type="password"
               name="password"
               value={this.state.password}
-              placeholder="Password"
+              placeholder="Password "
               required
               onChange={this.handleChange}
             />
+            <br />
+            <select
+              value={this.state.role}
+              name="role"
+              onChange={this.handleChange}
+            >
+              <option value="Select">Select</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <br />
             <br />
             <input
               type="submit"
@@ -89,14 +101,6 @@ export default class Signup extends React.Component {
               value="Submit"
             />
             <br />
-            <p>Have not account yet?</p>
-            <a
-              onClick={(e) => {
-                history.push("/signup");
-              }}
-            >
-              Sign up
-            </a>
           </form>
         </div>
       </div>

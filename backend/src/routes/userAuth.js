@@ -35,12 +35,12 @@ router.post("/signup", async (req, res, next) => {
         var isRole = req.body.role;
         var pendingRequest = "true";
         var status = "pending";
-        if (isRole == "User"){
-          status = "approved"
+        if (isRole == "User" || isRole == "Admin") {
+          status = "approved";
           pendingRequest = "false";
         }
-          try {
-          if (isRole == "User" || isRole == "Seller") {
+        try {
+          if (isRole == "User" || isRole == "Seller" || isRole == "Admin") {
             var dbInsert = await users.create({
               name: req.body.name,
               email: req.body.email,
@@ -50,7 +50,7 @@ router.post("/signup", async (req, res, next) => {
               email: req.body.email,
               role: req.body.role,
               pendingrequest: pendingRequest,
-              status : status,
+              status: status,
             });
             res.json({
               message: "success",
@@ -85,7 +85,7 @@ router.post("/login", async (req, res, next) => {
     // console.log(dbUser.email);
     const dbUserRole = await userrole.findOne({
       where: { email: req.body.email },
-      attributes: ["role", "pendingrequest","status"],
+      attributes: ["role", "pendingrequest", "status"],
     });
     //  console.log(dbUserRole.pendingrequest);
     if (dbUser.email) {
@@ -96,7 +96,10 @@ router.post("/login", async (req, res, next) => {
           });
         }
         if (result) {
-          if (dbUserRole.pendingrequest == "false" && dbUserRole.status != "reject") {
+          if (
+            dbUserRole.pendingrequest == "false" &&
+            dbUserRole.status != "reject"
+          ) {
             var jwtEmail = dbUser.email;
             var jwtName = dbUser.name;
             var jwtRole = dbUserRole.role;
@@ -114,7 +117,7 @@ router.post("/login", async (req, res, next) => {
               message: "Approvel pending",
               role: dbUserRole.role,
               pendingrequest: dbUserRole.pendingrequest,
-              status : dbUserRole.status,
+              status: dbUserRole.status,
             });
           }
         }

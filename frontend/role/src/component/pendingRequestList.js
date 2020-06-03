@@ -46,6 +46,7 @@ const PendingRequstList = () => {
         email: email,
       })
     });
+    // setUser(listUser.filter((item)=>item != email))
     }catch(error){
       console.log(error);
     }
