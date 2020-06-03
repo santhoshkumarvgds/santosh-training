@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import history from "../history";
+import axios from "axios";
 import "../index.css";
 
-export default class Signup extends React.Component {
+export default class login extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -48,7 +49,7 @@ export default class Signup extends React.Component {
       localStorage.setItem("redirect", "pendingapprovel");
       localStorage.setItem("pendingrequest", body.pendingrequest);
       history.push("/pendingapprovel");
-    }else if(body.message == "Approvel pending" && body.status == "reject"){
+    } else if (body.message == "Approvel pending" && body.status == "reject") {
       alert("You're rejected by Admin!!!");
     } else {
       alert(body.message);

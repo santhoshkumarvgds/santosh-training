@@ -18,10 +18,10 @@ class AdminHome extends React.Component {
   getInfo = async () => {
     const response = await fetch("http://localhost:4000/user/getinfo", {
       method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: localStorage.token,
-      }),
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.token,
+      },
     });
     const body = await response.json();
     console.log(body);

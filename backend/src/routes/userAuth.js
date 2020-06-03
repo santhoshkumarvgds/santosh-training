@@ -77,6 +77,7 @@ router.post("/signup", async (req, res, next) => {
 
 //login
 router.post("/login", async (req, res, next) => {
+  console.log(req.body.email);
   try {
     const dbUser = await users.findOne({
       where: { email: req.body.email },

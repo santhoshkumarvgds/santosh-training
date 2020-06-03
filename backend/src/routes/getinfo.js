@@ -10,16 +10,7 @@ const validuser = require("./checkvalid");
 
 router.post("/getinfo", validuser, async (req, res, next) => {
   try {
-    // console.log(req.body.token);
-    // console.log(validuser);
-    const tokenVerify = jwt.verify(req.body.token, jwtKey);
-    // var {email} = req.body;
-    // var {name} = req.body;
-    // var {role} = req.body;
-    // var db = await users.findOne({
-    //   where: { email: email },
-    //   attributes: ["name", "email", "isrole"],
-    // });
+    const tokenVerify = jwt.verify(req.headers.authorization, jwtKey);
     res.json({
       name: tokenVerify.jwtName,
       email: tokenVerify.jwtEmail,

@@ -14,10 +14,10 @@ class UserHome extends React.Component {
   getInfo = async () => {
     const response = await fetch("http://localhost:4000/user/getinfo", {
       method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: localStorage.token,
-      }),
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.token,
+      }
     });
     const body = await response.json();
     this.setState({
@@ -30,20 +30,16 @@ class UserHome extends React.Component {
     localStorage.clear();
     history.push("/");
   }
-  // componentWillMount() {
-  //   if (localStorage.count == 1) {
-  //     window.location.reload();
-  //   }
-  //   localStorage.setItem("count", 2);
-  // }
   render() {
     return (
       <div>
         <div className="header">
-          <h3>Codingmart  ||  User</h3>
+          <h3>Codingmart || User</h3>
           <div className="right">
             <a onClick={this.getInfo}>Get info</a>
-            <a className="logout-btn"onClick={this.handleLogout}>Logout</a>
+            <a className="logout-btn" onClick={this.handleLogout}>
+              Logout
+            </a>
           </div>
         </div>
         <div className="body">
