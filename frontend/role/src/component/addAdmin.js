@@ -24,9 +24,12 @@ export default class AddAdmin extends React.Component {
     e.preventDefault();
     const { name, email, password, role } = this.state;
     console.log(name);
-    const response = await fetch("http://localhost:4000/user/signup", {
+    const response = await fetch("http://localhost:4000/user/addadmin", {
       method: "post",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.token,
+      },
       body: JSON.stringify({
         name: name[0],
         email: email[0],

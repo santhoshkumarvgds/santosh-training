@@ -16,6 +16,7 @@ const { userAuth } = require("./routes/userAuth");
 const { getinfo } = require("./routes/getinfo");
 const { pendingapprovel } = require("./routes/pendingApprovel");
 const { acceptReject } = require("./routes/acceptRejectUser");
+const { addAdmin } = require("./routes/addAdmin");
 
 app.use("/user", userAuth);
 
@@ -24,5 +25,7 @@ app.use("/user", getinfo);
 app.use("/user", pendingapprovel);
 
 app.use("/user", acceptReject);
+
+app.use("/user", addAdmin);
 
 app.listen(port, () => console.log(`started https://loacalhost:${port}`));

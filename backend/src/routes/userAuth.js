@@ -52,10 +52,6 @@ router.post("/signup", async (req, res, next) => {
             });
             res.json({
               message: "success",
-              name: req.body.name,
-              email: req.body.email,
-              password: req.body.password,
-              role: req.body.role,
             });
           } else {
             res.json({

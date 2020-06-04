@@ -7,11 +7,15 @@ const validuser = require("../middleware/checkvalid");
 
 router.post("/accept", validuser, async (req, res, next) => {
   try {
-    if (req.data.jwtRole) {
+    if (req.data.jwtRole == "Admin") {
       userrole.update(
         { status: "approved", pendingrequest: "false" },
         { where: { email: req.body.email } }
       );
+    } else {
+      res.json({
+        message: "Role mismatch",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -19,11 +23,15 @@ router.post("/accept", validuser, async (req, res, next) => {
 });
 router.post("/reject", validuser, async (req, res, next) => {
   try {
-    if (req.data.jwtRole) {
+    if (req.data.jwtRole == "Admin") {
       userrole.update(
         { status: "reject", pendingrequest: "false" },
         { where: { email: req.body.email } }
       );
+    } else {
+      res.json({
+        message: "Role mismatch",
+      });
     }
   } catch (error) {
     console.log(error);
