@@ -4,12 +4,10 @@ const router = express.Router();
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 //local module
-const { users } = require("../config/database.js");
-const { userrole } = require("../config/database.js");
+const { users, userrole } = require("../models/database.js");
 
-const jwtKey = "sAnThOsHkUmAr"; //my_secret_key
+const jwtKey = process.env.JWT_KEY; //my_secret_key
 
 //signup
 router.post("/signup", async (req, res, next) => {
@@ -77,7 +75,6 @@ router.post("/signup", async (req, res, next) => {
 
 //login
 router.post("/login", async (req, res, next) => {
-  console.log(req.body.email);
   try {
     const dbUser = await users.findOne({
       where: { email: req.body.email },

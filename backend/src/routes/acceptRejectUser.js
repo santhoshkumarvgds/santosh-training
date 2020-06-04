@@ -1,32 +1,35 @@
 //core module
 const express = require("express");
-const app = express();
 const router = express.Router();
 
-const { users, userrole } = require("../config/database.js");
-const validuser = require("./checkvalid");
+const { users, userrole } = require("../models/database.js");
+const validuser = require("../middleware/checkvalid");
 
-router.post("/accept", async (req, res, next) => {
-    try {
-        userrole.update(
-            {status : 'approved',pendingrequest : 'false'},
-            {where : {email : req.body.email}}
-        );
-    } catch (error) {
-        console.log(error);
+router.post("/accept", validuser, async (req, res, next) => {
+  try {
+    if (req.data.jwtRole) {
+      userrole.update(
+        { status: "approved", pendingrequest: "false" },
+        { where: { email: req.body.email } }
+      );
     }
+  } catch (error) {
+    console.log(error);
+  }
 });
-router.post("/reject", async (req, res, next) => {
-    try {
-        userrole.update(
-            {status : 'reject',pendingrequest : 'false'},
-            {where : {email : req.body.email}}
-        );
-    } catch (error) {
-        console.log(error);
+router.post("/reject", validuser, async (req, res, next) => {
+  try {
+    if (req.data.jwtRole) {
+      userrole.update(
+        { status: "reject", pendingrequest: "false" },
+        { where: { email: req.body.email } }
+      );
     }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = {
-    acceptReject : router
-}
+  acceptReject: router,
+};

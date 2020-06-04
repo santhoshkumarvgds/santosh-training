@@ -1,20 +1,15 @@
 //core module
 const express = require("express");
-const app = express();
 const router = express.Router();
-const jwt = require("jsonwebtoken");
-const jwtKey = "sAnThOsHkUmAr"; //my_secret_key
 
-const { users } = require("../config/database.js");
-const validuser = require("./checkvalid");
+const validuser = require("../middleware/checkvalid");
 
 router.post("/getinfo", validuser, async (req, res, next) => {
   try {
-    const tokenVerify = jwt.verify(req.headers.authorization, jwtKey);
     res.json({
-      name: tokenVerify.jwtName,
-      email: tokenVerify.jwtEmail,
-      role: tokenVerify.jwtRole,
+      name: req.data.jwtName,
+      email: req.data.jwtEmail,
+      role: req.data.jwtRole,
     });
   } catch (e) {
     console.log(e);
