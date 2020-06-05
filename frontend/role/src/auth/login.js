@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import history from "../history";
-import "../index.css";
+import "../assets/css/index.css";
 import Auth from "./auth";
 
 export default class Signup extends React.Component {

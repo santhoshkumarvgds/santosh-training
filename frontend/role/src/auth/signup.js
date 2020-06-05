@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import history from "../history";
-import "../index.css";
+import "../assets/css/index.css";
 
 export default class Signup extends React.Component {
   constructor() {
@@ -26,19 +26,16 @@ export default class Signup extends React.Component {
     e.preventDefault();
     const { name, email, password, role } = this.state;
     console.log(name);
-    const response = await fetch(
-      "http://localhost:4000/user/signup",
-      {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name[0],
-          email: email[0],
-          password: password[0],
-          role: role[0],
-        }),
-      }
-    );
+    const response = await fetch("http://localhost:4000/user/signup", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name[0],
+        email: email[0],
+        password: password[0],
+        role: role[0],
+      }),
+    });
     // console.log(response);
     const body = await response.json();
     if (body.message == "Mail exists") {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../index.css";
+import "../assets/css/index.css";
 
 export default class AddAdmin extends React.Component {
   constructor() {
