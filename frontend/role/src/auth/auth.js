@@ -8,7 +8,6 @@ class Auth {
     this.userEmail = "";
     this.userPassword = "";
   }
-  
 
   async login(cb) {
     localStorage.clear();
@@ -55,6 +54,20 @@ class Auth {
     localStorage.clear();
     Auth.authenticateStatus = false;
     history.push("/");
+  }
+
+  isAuthenticateUser() {
+    alert("run");
+    return fetch("http://localhost:4000/user/getinfo", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: localStorage.token,
+      },
+    }).then((res) => {
+      const data = res.json();
+      return data;
+    });
   }
 
   isAuthenticate() {
