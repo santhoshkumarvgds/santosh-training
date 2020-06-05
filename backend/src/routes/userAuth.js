@@ -71,17 +71,18 @@ router.post("/signup", async (req, res, next) => {
 
 //login
 router.post("/login", async (req, res, next) => {
+  console.log(
+    req.body.email
+  );
   try {
     const dbUser = await users.findOne({
       where: { email: req.body.email },
       attributes: ["email", "password", "name"],
     });
-    // console.log(dbUser.email);
     const dbUserRole = await userrole.findOne({
       where: { email: req.body.email },
       attributes: ["role", "pendingrequest", "status"],
     });
-    //  console.log(dbUserRole.pendingrequest);
     if (dbUser.email) {
       bcrypt.compare(req.body.password, dbUser.password, (err, result) => {
         if (err) {

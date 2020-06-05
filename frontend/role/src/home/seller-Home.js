@@ -1,6 +1,7 @@
 import React from "react";
 import history from "../history";
 import "../assets/css/home.css";
+import Auth from "../auth/auth";
 
 class SellerHome extends React.Component {
   constructor() {
@@ -38,7 +39,7 @@ class SellerHome extends React.Component {
           <h3>Codingmart || Seller</h3>
           <div className="right">
             <a onClick={this.getInfo}>Get info</a>
-            <a className="logout-btn" onClick={this.handleLogout}>
+            <a className="logout-btn" onClick={Auth.logout}>
               Logout
             </a>
           </div>

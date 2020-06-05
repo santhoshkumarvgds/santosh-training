@@ -1,6 +1,7 @@
 import React from "react";
 import history from "../history";
 import "../assets/css/home.css";
+import Auth from "../auth/auth";
 
 class UserHome extends React.Component {
   constructor() {
@@ -17,7 +18,7 @@ class UserHome extends React.Component {
       headers: {
         "Content-Type": "application/json",
         authorization: localStorage.token,
-      }
+      },
     });
     const body = await response.json();
     this.setState({
@@ -37,7 +38,7 @@ class UserHome extends React.Component {
           <h3>Codingmart || User</h3>
           <div className="right">
             <a onClick={this.getInfo}>Get info</a>
-            <a className="logout-btn" onClick={this.handleLogout}>
+            <a className="logout-btn" onClick={Auth.logout}>
               Logout
             </a>
           </div>

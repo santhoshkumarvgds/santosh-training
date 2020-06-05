@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import history from "../history";
-import axios from "axios";
 import "../index.css";
+import Auth from "./auth";
 
-export default class login extends React.Component {
-  constructor() {
-    super();
+export default class Signup extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       email: "",
       password: "",
@@ -20,40 +20,15 @@ export default class login extends React.Component {
     });
   }
   async handleSubmit(e) {
-    localStorage.clear();
     e.preventDefault();
-    const { email, password } = this.state;
-    // console.log(name);
-    const response = await fetch("http://localhost:4000/user/login", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email[0],
-        password: password[0],
-      }),
+    Auth.userEmail = this.state.email;
+    Auth.userPassword = this.state.password;
+    Auth.login(() => {
+      if(Auth.pendingStatus)
+        this.props.history.push("/pendingapprovel");
+      else
+        this.props.history.push(Auth.authenticateStatus);
     });
-    const body = await response.json();
-    if (body.message == "success" && body.role == "User") {
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("redirect", "user");
-      history.push("/user");
-    } else if (body.message == "success" && body.role == "Admin") {
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("redirect", "admin");
-      history.push("/admin");
-    } else if (body.message == "success" && body.role == "Seller") {
-      localStorage.setItem("token", body.token);
-      localStorage.setItem("redirect", "seller");
-      history.push("/seller");
-    } else if (body.message == "Approvel pending" && body.status != "reject") {
-      localStorage.setItem("redirect", "pendingapprovel");
-      localStorage.setItem("pendingrequest", body.pendingrequest);
-      history.push("/pendingapprovel");
-    } else if (body.message == "Approvel pending" && body.status == "reject") {
-      alert("You're rejected by Admin!!!");
-    } else {
-      alert(body.message);
-    }
   }
 
   render() {

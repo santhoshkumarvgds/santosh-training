@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import history from "../history";
 import "../assets/css/home.css";
 import PendingRequstList from "../component/pendingRequestList";
 import AddAdmin from "../component/addAdmin";
+import Auth from "../auth/auth";
 
 class AdminHome extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: "",
       email: "",
@@ -14,7 +15,7 @@ class AdminHome extends React.Component {
       user: "",
     };
   }
-
+ 
   getInfo = async () => {
     const response = await fetch("http://localhost:4000/user/getinfo", {
       method: "post",
@@ -24,7 +25,7 @@ class AdminHome extends React.Component {
       },
     });
     const body = await response.json();
-    console.log(body);
+    // console.log(body);
     this.setState({
       name: body.name,
       email: body.email,
@@ -32,10 +33,6 @@ class AdminHome extends React.Component {
       render: "",
     });
   };
-  handleLogout() {
-    localStorage.clear();
-    history.push("/");
-  }
   handleClick(compName) {
     this.setState({
       render: compName,
@@ -76,7 +73,7 @@ class AdminHome extends React.Component {
             >
               Pending user
             </a>
-            <a className="logout-btn" onClick={this.handleLogout}>
+            <a className="logout-btn" onClick={Auth.logout}>
               Logout
             </a>
           </div>

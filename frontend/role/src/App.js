@@ -7,6 +7,8 @@ import Pendingapprovel from "./home/pending-approvel";
 import AdminHome from "./home/admin-Home";
 import UserHome from "./home/user-Home";
 import SellerHome from "./home/seller-Home";
+import Auth from "./auth/auth";
+import { ProtectRoute } from "./router/protectRoute";
 
 const NoMatch = (props) => {
   return <div>404</div>;
@@ -23,49 +25,29 @@ class App extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
 
-          <Route
+          <ProtectRoute
             exact
             path="/admin"
-            render={() =>
-              localStorage.redirect == "admin" ? (
-                <AdminHome />
-              ) : (
-                <Redirect to={localStorage.redirect} />
-              )
-            }
+            roles={["admin"]}
+            component={AdminHome}
           />
-          <Route
+          <ProtectRoute
             exact
             path="/user"
-            render={() =>
-              localStorage.redirect == "user" ? (
-                <UserHome />
-              ) : (
-                <Redirect to={localStorage.redirect} />
-              )
-            }
+            roles={["user"]}
+            component={UserHome}
           />
-          <Route
+          <ProtectRoute
             exact
             path="/seller"
-            render={() =>
-              localStorage.redirect == "seller" ? (
-                <SellerHome />
-              ) : (
-                <Redirect to={localStorage.redirect} />
-              )
-            }
+            roles={["seller"]}
+            component={SellerHome}
           />
-          <Route
+          <ProtectRoute
             exact
+            roles={["seller"]}
             path="/pendingapprovel"
-            render={() =>
-              localStorage.redirect == "pendingapprovel" ? (
-                <Pendingapprovel />
-              ) : (
-                <Redirect to={localStorage.redirect} />
-              )
-            }
+            component={Pendingapprovel}
           />
 
           <Route component={NoMatch} />
