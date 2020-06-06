@@ -24,10 +24,12 @@ export default class Signup extends React.Component {
     Auth.userEmail = this.state.email;
     Auth.userPassword = this.state.password;
     Auth.login(() => {
+      localStorage.setItem("role",Auth.authenticateStatus);
       if(Auth.pendingStatus)
         this.props.history.push("/pendingapprovel");
       else
         this.props.history.push(Auth.authenticateStatus);
+
     });
   }
 

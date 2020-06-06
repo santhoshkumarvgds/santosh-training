@@ -37,9 +37,8 @@ class Auth {
       //   history.push("/seller");
       cb();
     } else if (body.message == "Approvel pending" && body.status != "reject") {
-      localStorage.setItem("redirect", "pendingapprovel");
-      this.pendingStatus = true;
-      this.authenticateStatus = "seller";
+      // localStorage.setItem("redirect", "pendingapprovel");
+      this.authenticateStatus = "pendingapprovel";
       //   history.push("/pendingapprovel")
       cb();
     } else if (body.message == "Approvel pending" && body.status == "reject") {
@@ -56,18 +55,26 @@ class Auth {
     history.push("/");
   }
 
-  isAuthenticateUser() {
-    alert("run");
-    return fetch("http://localhost:4000/user/getinfo", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: localStorage.token,
-      },
-    }).then((res) => {
-      const data = res.json();
-      return data;
-    });
+ async isAuthenticateUser() {
+   const a=localStorage.getItem("role");
+   this.authenticateStatus=a;
+  return a;
+    //  await fetch("http://localhost:4000/user/getinfo", {
+    //   method: "post",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     authorization: localStorage.token,
+    //   },
+    // }).then(res=>res.json()).then(data=>{
+    //   alert(data.role);
+    //   this.authenticateStatus=data.role;
+    //   return data.role;
+    // })
+    // const body = await response.json();
+    // // alert(body.role);
+    // this.authenticateStatus=body.role;
+    // alert(this.authenticateStatus);
+    // return body.role;
   }
 
   isAuthenticate() {

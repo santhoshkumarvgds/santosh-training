@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 import Auth from "../auth/auth";
 
@@ -7,15 +7,13 @@ export const ProtectRoute = ({ component: Component, roles, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        if (Auth.isAuthenticate() == roles && Auth.pendingStatus) {
-          return <Component {...props} />;
-        } else if (Auth.isAuthenticate() == roles) {
+      if (Auth.isAuthenticateUser() && Auth.authenticateStatus==roles){
           return <Component {...props} />;
         } else {
           return (
             <Redirect
               to={{
-                pathname: "/",
+                pathname:Auth.authenticateStatus,
                 state: {
                   from: props.location,
                 },
@@ -23,6 +21,8 @@ export const ProtectRoute = ({ component: Component, roles, ...rest }) => {
             />
           );
         }
+
+
       }}
     />
   );

@@ -13,10 +13,12 @@ import { ProtectRoute } from "./router/protectRoute";
 const NoMatch = () => {
   return <div>404</div>;
 };
+
 class App extends React.Component {
   constructor() {
     super();
   }
+
   render() {
     return (
       <div>
@@ -45,7 +47,7 @@ class App extends React.Component {
           />
           <ProtectRoute
             exact
-            roles={["seller"]}
+            roles={["pendingapprovel"]}
             path="/pendingapprovel"
             component={Pendingapprovel}
           />

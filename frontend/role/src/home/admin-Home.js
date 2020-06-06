@@ -26,7 +26,8 @@ class AdminHome extends React.Component {
       },
     });
     const body = await response.json();
-    // console.log(body);
+    alert(body.role);
+
     this.setState({
       name: body.name,
       email: body.email,
