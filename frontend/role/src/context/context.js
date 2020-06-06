@@ -1,19 +1,23 @@
-import React, { useState, createContext, useEffect, Children } from "react";
-import Auth from "../auth/auth";
+import React from "react";
 
-const AuthContext = createContext();
+const UserContext = React.createContext();
+const UserProvider = UserContext.Provider;
+const UserConsumer = UserContext.Consumer;
 
-export default ({children}) => {
-  const [currentUserEmail, setemail] = useState();
-  const [currentUserRole, setrole] = useState();
+export {UserConsumer, UserProvider}
 
-      setemail(Auth.userEmail);
-      setrole(Auth.authenticateStatus);
-  return (
-    <div>
-        <AuthContext.Provider value={{ email : currentUserEmail,role :currentUserRole}}>
-          {Children}
-        </AuthContext.Provider>
-    </div>
-  );
-};
+
+// export default ({children}) => {
+//   const [currentUserEmail, setemail] = useState();
+//   const [currentUserRole, setrole] = useState();
+
+//       // setemail(Auth.userEmail);
+//       // setrole(Auth.authenticateStatus);
+//   return (
+//     <div>
+//         <AuthContext.Provider value={{ email : "hi",role :"hi"}}>
+//           {children}
+//         </AuthContext.Provider>
+//     </div>
+//   );
+// };

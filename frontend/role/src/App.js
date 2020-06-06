@@ -10,6 +10,7 @@ import SellerHome from "./home/seller-Home";
 import Auth from "./auth/auth";
 import { ProtectRoute } from "./router/protectRoute";
 
+
 const NoMatch = () => {
   return <div>404</div>;
 };

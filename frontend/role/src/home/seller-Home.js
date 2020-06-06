@@ -2,6 +2,8 @@ import React from "react";
 import history from "../history";
 import "../assets/css/home.css";
 import Auth from "../auth/auth";
+import {UserProvider} from "../context/context";
+import Info from '../component/getinfo';
 
 class SellerHome extends React.Component {
   constructor() {
@@ -35,6 +37,7 @@ class SellerHome extends React.Component {
   render() {
     return (
       <div>
+      <UserProvider value={{name:this.state.name,email:this.state.email,role:this.state.role}}>
         <div className="header">
           <h3>Codingmart || Seller</h3>
           <div className="right">
@@ -45,10 +48,9 @@ class SellerHome extends React.Component {
           </div>
         </div>
         <div className="body">
-          <p>{this.state.name}</p>
-          <p>{this.state.email}</p>
-          <p>{this.state.role}</p>
+          <Info/>
         </div>
+        </UserProvider>
       </div>
     );
   }

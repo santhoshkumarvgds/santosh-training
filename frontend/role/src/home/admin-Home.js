@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import history from "../history";
 import "../assets/css/home.css";
-import PendingRequstList from "../component/pendingRequestList";
+import  PendingRequstList from "../component/pendingRequestList";
 import AddAdmin from "../component/addAdmin";
 import Auth from "../auth/auth";
-import context from "../context/context";
+import {UserProvider} from "../context/context";
+import Info from '../component/getinfo';
 
 class AdminHome extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class AdminHome extends React.Component {
     };
   }
 
-  getInfo = async () => {
+ getInfo = async () => {
     const response = await fetch("http://localhost:4000/user/getinfo", {
       method: "post",
       headers: {
@@ -26,7 +27,7 @@ class AdminHome extends React.Component {
       },
     });
     const body = await response.json();
-    alert(body.role);
+    // alert(body.role);
 
     this.setState({
       name: body.name,
@@ -35,6 +36,7 @@ class AdminHome extends React.Component {
       render: "",
     });
   };
+
   handleClick(compName) {
     this.setState({
       render: compName,
@@ -48,11 +50,14 @@ class AdminHome extends React.Component {
         return <AddAdmin />;
     }
   }
+
   render() {
     return (
             <div>
+            <UserProvider value={{name:this.state.name,email:this.state.email,role:this.state.role}}>
               <div className="header">
                <h3>Codingmart || Admin</h3>
+
                 <div className="right">
                   <a
                     onClick={() => {
@@ -81,12 +86,11 @@ class AdminHome extends React.Component {
                 </div>
               </div>
               <div className="body">
-                <p>{this.state.name}</p>
-                <p>{this.state.email}</p>
-                <p>{this.state.role}</p>
-                <p>{this.state.user}</p>
+                <Info/>
                 {this.renderComp()}
               </div>
+
+              </UserProvider>
             </div>
 
 
