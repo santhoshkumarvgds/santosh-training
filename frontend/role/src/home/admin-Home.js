@@ -18,7 +18,7 @@ class AdminHome extends React.Component {
     };
   }
 
- getInfo = async () => {
+ async getInfo(){
     const response = await fetch("http://localhost:4000/user/getinfo", {
       method: "post",
       headers: {
@@ -48,7 +48,12 @@ class AdminHome extends React.Component {
         return <PendingRequstList />;
       case "addAdmin":
         return <AddAdmin />;
+      case "getinfo":
+        return <Info/>
     }
+  }
+  componentWillMount(){
+    this.getInfo();
   }
 
   render() {
@@ -61,7 +66,7 @@ class AdminHome extends React.Component {
                 <div className="right">
                   <a
                     onClick={() => {
-                      this.getInfo();
+                      this.handleClick("getinfo");
                     }}
                   >
                     Get Info
@@ -86,7 +91,7 @@ class AdminHome extends React.Component {
                 </div>
               </div>
               <div className="body">
-                <Info/>
+
                 {this.renderComp()}
               </div>
 

@@ -33,7 +33,6 @@ class SellerHome extends React.Component {
     localStorage.clear();
     history.push("/");
   }
-
   render() {
     return (
       <div>
