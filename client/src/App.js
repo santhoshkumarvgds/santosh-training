@@ -6,14 +6,14 @@ import Pendingapprovel from "./Containers/Home/PendingApprovel";
 import AdminHome from "./Containers/Home/AdminHome";
 import UserHome from "./Containers/Home/UserHome";
 import SellerHome from "./Containers/Home/SellerHome";
-import { ProtectRoute } from "./Containers/Router/ProtectRoute";
+import ProtectRoute from "./Containers/Router/ProtectRoute";
 import Context from "./Containers/Context/Context";
 
 const NoMatch = () => {
   return <div>404</div>;
 };
 
-export default () => {
+export default function App(){
   return (
     <Context>
       <Switch>

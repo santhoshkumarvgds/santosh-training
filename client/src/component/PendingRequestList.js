@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default () => {
+export default function PendingRequstList(){
   const [listUser, setUser] = useState([]);
   const getList = async () => {
     try {

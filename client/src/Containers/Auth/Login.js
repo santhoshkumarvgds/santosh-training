@@ -3,7 +3,7 @@ import history from "../../history";
 import "../../assets/css/index.css";
 import Auth from "./Auth";
 
-export default (props) => {
+export default function Login(props){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleChangeEmail = (e) => {
@@ -57,7 +57,6 @@ export default (props) => {
           <br />
           <p>Have not account yet?</p>
           <a
-            href="#/"
             onClick={(e) => {
               history.push("/signup");
             }}

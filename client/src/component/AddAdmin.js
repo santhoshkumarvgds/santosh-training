@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import "../assets/css/index.css";
 
-export default (props) => {
+export default function AddAdmin(props){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");

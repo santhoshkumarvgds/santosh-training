@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import history from "../../history";
 import "../../assets/css/index.css";
 
-export default (props) => {
+export default function Signup(props){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");

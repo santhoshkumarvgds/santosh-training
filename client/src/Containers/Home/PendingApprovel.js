@@ -1,7 +1,7 @@
 import React from "react";
 import "../../assets/css/pending-approvel.css";
 
-export default () => {
+export default function PendingApprovel(){
   return (
     <div className="section">
       <div className="content">

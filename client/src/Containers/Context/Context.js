@@ -7,7 +7,7 @@ const UserConsumer = UserContext.Consumer;
 
 export { UserConsumer, UserProvider };
 
-export default (props) => {
+export default function Context(props){
   const [currentUserName, setName] = useState(null);
   const [currentUserEmail, setEmail] = useState(null);
   const [currentUserRole, setRole] = useState(null);

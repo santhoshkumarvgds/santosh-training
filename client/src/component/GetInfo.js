@@ -1,7 +1,7 @@
 import React from "react";
 import { UserConsumer } from "../Containers/Context/Context";
 
-export default () => {
+export default function GetInfo(){
   return (
     <UserConsumer>
       {(user) => {

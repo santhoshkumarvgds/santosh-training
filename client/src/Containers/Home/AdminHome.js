@@ -6,7 +6,7 @@ import Auth from "../Auth/Auth";
 import Context from "../Context/Context";
 import Info from "../../component/GetInfo";
 
-export default () => {
+export default function AdminHome(){
   const [render, setRender] = useState("");
   const handleClick = (compName) => {
     setRender(compName);

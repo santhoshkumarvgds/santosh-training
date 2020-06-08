@@ -4,7 +4,7 @@ import Auth from "../Auth/Auth";
 import Info from "../../component/GetInfo";
 import Context from "../Context/Context";
 
-export default () => {
+export default function UserHome(){
   const [info, setInfo] = useState(false);
   const getInfo = () => {
     setInfo(true);
