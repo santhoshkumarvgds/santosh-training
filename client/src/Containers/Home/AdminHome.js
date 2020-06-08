@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../assets/css/home.css";
 import PendingRequstList from "../../component/PendingRequestList";
 import AddAdmin from "../../component/AddAdmin";
@@ -6,21 +6,13 @@ import Auth from "../Auth/Auth";
 import Context from "../Context/Context";
 import Info from "../../component/GetInfo";
 
-class AdminHome extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      render: "",
-    };
-  }
-
-  handleClick(compName) {
-    this.setState({
-      render: compName,
-    });
-  }
-  renderComp() {
-    switch (this.state.render) {
+export default () => {
+  const [render, setRender] = useState("");
+  const handleClick = (compName) => {
+    setRender(compName);
+  };
+  const renderComp = () => {
+    switch (render) {
       case "pendingUser":
         return <PendingRequstList />;
       case "addAdmin":
@@ -30,44 +22,40 @@ class AdminHome extends React.Component {
       default:
         return "";
     }
-  }
-  render() {
-    return (
-      <Context>
-        <div className="header">
-          <h3>Codingmart || Admin</h3>
+  };
+  return (
+    <Context>
+      <div className="header">
+        <h3>Codingmart || Admin</h3>
 
-          <div className="right">
-            <a
-              onClick={() => {
-                this.handleClick("getinfo");
-              }}
-            >
-              Get Info
-            </a>
-            <a
-              onClick={() => {
-                this.handleClick("addAdmin");
-              }}
-            >
-              Add Admin
-            </a>
-            <a
-              onClick={() => {
-                this.handleClick("pendingUser");
-              }}
-            >
-              Pending user
-            </a>
-            <a className="logout-btn" onClick={Auth.logout}>
-              Logout
-            </a>
-          </div>
+        <div className="right">
+          <a
+            onClick={() => {
+              handleClick("getinfo");
+            }}
+          >
+            Get Info
+          </a>
+          <a
+            onClick={() => {
+              handleClick("addAdmin");
+            }}
+          >
+            Add Admin
+          </a>
+          <a
+            onClick={() => {
+              handleClick("pendingUser");
+            }}
+          >
+            Pending user
+          </a>
+          <a href="/" className="logout-btn" onClick={Auth.logout}>
+            Logout
+          </a>
         </div>
-        <div className="body">{this.renderComp()}</div>
-      </Context>
-    );
-  }
-}
-
-export default AdminHome;
+      </div>
+      <div className="body">{renderComp()}</div>
+    </Context>
+  );
+};

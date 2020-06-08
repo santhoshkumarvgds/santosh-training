@@ -15,8 +15,8 @@ class Auth {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: email[0],
-        password: password[0],
+        email: email,
+        password: password,
       }),
     });
     const body = await response.json();
@@ -69,6 +69,7 @@ class Auth {
       },
     });
     const body = await response.json();
+    this.authenticateStatus = body.role;
     return body;
   }
   isAuthenticate() {

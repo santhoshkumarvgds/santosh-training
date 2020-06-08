@@ -18,7 +18,7 @@ export default (props) => {
       setName(body.name);
       setEmail(body.email);
       setRole(body.role);
-      setLogged(true);
+      if (body.email) setLogged(true);
     });
   }, []);
   return (

@@ -13,40 +13,36 @@ const NoMatch = () => {
   return <div>404</div>;
 };
 
-class App extends React.Component {
-  render() {
-    return (
-      <Context>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
+export default () => {
+  return (
+    <Context>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
 
-          <ProtectRoute
-            exact
-            path="/admin"
-            roles={["Admin"]}
-            component={AdminHome}
-          />
-          <ProtectRoute
-            exact
-            path="/user"
-            roles={["User"]}
-            component={UserHome}
-          />
-          <ProtectRoute
-            exact
-            path="/seller"
-            roles={["Seller"]}
-            component={SellerHome}
-          />
-          <Route exact path="/pendingapprovel" component={Pendingapprovel} />
+        <ProtectRoute
+          exact
+          path="/admin"
+          roles={["Admin"]}
+          component={AdminHome}
+        />
+        <ProtectRoute
+          exact
+          path="/user"
+          roles={["User"]}
+          component={UserHome}
+        />
+        <ProtectRoute
+          exact
+          path="/seller"
+          roles={["Seller"]}
+          component={SellerHome}
+        />
+        <Route exact path="/pendingapprovel" component={Pendingapprovel} />
 
-          <Route component={NoMatch} />
-        </Switch>
-      </Context>
-    );
-  }
-}
-
-export default App;
+        <Route component={NoMatch} />
+      </Switch>
+    </Context>
+  );
+};

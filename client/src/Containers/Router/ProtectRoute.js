@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { UserContext } from "../Context/Context";
+import Auth from "../Auth/Auth";
 
 export const ProtectRoute = ({ component: Component, roles, ...rest }) => {
   const { role, loginStatus } = useContext(UserContext);
@@ -8,6 +9,9 @@ export const ProtectRoute = ({ component: Component, roles, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
+        // alert(
+        //   role + " " + roles + " " + loginStatus + " " + Auth.authenticateStatus
+        // );
         if (role == roles) {
           // alert(role);
           return <Component {...props} />;
@@ -21,7 +25,11 @@ export const ProtectRoute = ({ component: Component, roles, ...rest }) => {
               }}
             />
           );
-        } else if (role == undefined && loginStatus) {
+        } else if (
+          Auth.authenticateStatus == undefined &&
+          role == undefined &&
+          !loginStatus
+        ) {
           return (
             <Redirect
               to={{

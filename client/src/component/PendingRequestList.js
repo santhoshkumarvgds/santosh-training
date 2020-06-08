@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const PendingRequstList = () => {
+export default () => {
   const [listUser, setUser] = useState([]);
   const getList = async () => {
     try {
@@ -71,10 +71,14 @@ const PendingRequstList = () => {
               <tr key={item}>
                 <td>{item}</td>
                 <td>
-                  <a href="#/" onClick={() => accept(item)}>Accept</a>
+                  <a href="#/" onClick={() => accept(item)}>
+                    Accept
+                  </a>
                 </td>
                 <td>
-                  <a href="#/" onClick={() => reject(item)}>Reject</a>
+                  <a href="#/" onClick={() => reject(item)}>
+                    Reject
+                  </a>
                 </td>
               </tr>
             ))}
@@ -84,5 +88,3 @@ const PendingRequstList = () => {
     </div>
   );
 };
-
-export default PendingRequstList;
