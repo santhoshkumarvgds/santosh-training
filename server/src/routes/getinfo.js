@@ -7,9 +7,9 @@ const validuser = require("../middleware/checkvalid");
 router.post("/getinfo", validuser, async (req, res, next) => {
   try {
     res.json({
-      name: req.data.jwtName,
-      email: req.data.jwtEmail,
-      role: req.data.jwtRole,
+      name: req.session.name,
+      email: req.session.email,
+      role: req.session.role,
     });
   } catch (e) {
     console.log(e);

@@ -7,7 +7,7 @@ const validuser = require("../middleware/checkvalid");
 
 router.post("/accept", validuser, async (req, res, next) => {
   try {
-    if (req.data.jwtRole == "Admin") {
+    if (req.session.role == "Admin") {
       userrole.update(
         { status: "approved", pendingrequest: "false" },
         { where: { email: req.body.email } }
@@ -23,7 +23,7 @@ router.post("/accept", validuser, async (req, res, next) => {
 });
 router.post("/reject", validuser, async (req, res, next) => {
   try {
-    if (req.data.jwtRole == "Admin") {
+    if (req.session.role == "Admin") {
       userrole.update(
         { status: "reject", pendingrequest: "false" },
         { where: { email: req.body.email } }

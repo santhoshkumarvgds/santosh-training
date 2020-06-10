@@ -1,14 +1,27 @@
 const jwt = require("jsonwebtoken");
-const jwtKey = process.env.JWT_KEY; //my_secret_key
+const session = require("express-session");
+// const jwtKey = process.env.JWT_KEY; //my_secret_key
 module.exports = (req, res, next) => {
   try {
-    const tokenVerify = jwt.verify(req.headers.authorization, jwtKey);
-    req.data = tokenVerify;
-    next();
+    if (req.session.name) {
+      next();
+    }
   } catch (e) {
-    console.log(e);
-    return res.status(401).json({
-      message: "token invalid",
+    return res.json({
+      message: "session invalid",
     });
   }
+
+  // try {
+  //   const tokenVerify = jwt.verify(req.headers.authorization, jwtKey);
+  //   // name = req.session.name;
+  //   // req.data.email = req.session.email;
+  //   // req.data.role = req.session.role;
+  //   next();
+  // } catch (e) {
+  //   console.log(e);
+  //   return res.status(401).json({
+  //     message: "token invalid",
+  //   });
+  // }
 };

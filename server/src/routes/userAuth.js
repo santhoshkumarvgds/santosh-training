@@ -1,5 +1,6 @@
 //core module
 const express = require("express");
+const session = require("express-session");
 const router = express.Router();
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
@@ -71,9 +72,8 @@ router.post("/signup", async (req, res, next) => {
 
 //login
 router.post("/login", async (req, res, next) => {
-  console.log(
-    req.body.email
-  );
+  // console.log(req.body.email);
+  // req.session.destroy();
   try {
     const dbUser = await users.findOne({
       where: { email: req.body.email },
@@ -95,15 +95,18 @@ router.post("/login", async (req, res, next) => {
             dbUserRole.pendingrequest == "false" &&
             dbUserRole.status != "reject"
           ) {
-            var jwtEmail = dbUser.email;
-            var jwtName = dbUser.name;
-            var jwtRole = dbUserRole.role;
-            const token = jwt.sign({ jwtName, jwtEmail, jwtRole }, jwtKey, {
-              algorithm: "HS256",
-            });
+            // var jwtEmail = dbUser.email;
+            // var jwtName = dbUser.name;
+            // var jwtRole = dbUserRole.role;
+            // const token = jwt.sign({ jwtName, jwtEmail, jwtRole }, jwtKey, {
+            //   algorithm: "HS256",
+            // });
+            req.session.name = dbUser.name;
+            req.session.email = dbUser.email;
+            req.session.role = dbUserRole.role;
             return res.json({
               message: "success",
-              token: token,
+              // token: token,
               role: dbUserRole.role,
               pendingrequest: dbUserRole.pendingrequest,
             });
@@ -131,6 +134,15 @@ router.post("/login", async (req, res, next) => {
       message: "Mail not exists",
     });
   }
+});
+
+router.post("/logout", (req, res, next) => {
+  req.session.destroy(function () {
+    res.clearCookie("connect.sid");
+    res.json({
+      status: "success",
+    });
+  });
 });
 
 module.exports = {

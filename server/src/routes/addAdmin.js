@@ -9,7 +9,7 @@ const { users, userrole } = require("../models/database.js");
 const validuser = require("../middleware/checkvalid");
 
 router.post("/addadmin", validuser, async (req, res, next) => {
-  if (req.data.jwtRole == "Admin") {
+  if (req.session.role == "Admin") {
     try {
       var dbEmail = await users.findOne({
         where: { email: req.body.email },

@@ -7,7 +7,8 @@ const validuser = require("../middleware/checkvalid");
 
 router.post("/pendingapprovel", validuser, async (req, res, next) => {
   try {
-    if (req.data.jwtRole == "Admin") {
+    console.log(req.session.role);
+    if (req.session.role == "Admin") {
       const dbTrue = "true";
       const dbPendingList = await userrole.findAll({
         where: { pendingrequest: dbTrue },

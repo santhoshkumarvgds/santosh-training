@@ -3,7 +3,7 @@ import history from "../../history";
 import "../../assets/css/index.css";
 import Auth from "./Auth";
 
-export default function Login(props){
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleChangeEmail = (e) => {
@@ -17,6 +17,7 @@ export default function Login(props){
     Auth.userEmail = email;
     Auth.userPassword = password;
     Auth.login(() => {
+      // alert(Auth.authenticateStatus);
       if (Auth.pendingStatus) props.history.push("/pendingapprovel");
       else props.history.push(Auth.authenticateStatus);
     });
@@ -67,4 +68,4 @@ export default function Login(props){
       </div>
     </div>
   );
-};
+}

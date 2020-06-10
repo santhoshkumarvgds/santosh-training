@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { UserContext } from "../Context/Context";
 import Auth from "../Auth/Auth";
 
-export default function  ProtectRoute({ component: Component, roles, ...rest }){
+export default function ProtectRoute({ component: Component, roles, ...rest }) {
   const { role, loginStatus } = useContext(UserContext);
   return (
     <Route
@@ -16,16 +16,7 @@ export default function  ProtectRoute({ component: Component, roles, ...rest }){
           // alert(role);
           return <Component {...props} />;
         }
-        if (role) {
-          return (
-            <Redirect
-              to={{
-                pathname: role,
-                state: { from: props.location },
-              }}
-            />
-          );
-        } else if (
+         if (
           Auth.authenticateStatus == undefined &&
           role == undefined &&
           !loginStatus
@@ -43,4 +34,4 @@ export default function  ProtectRoute({ component: Component, roles, ...rest }){
       }}
     />
   );
-};
+}

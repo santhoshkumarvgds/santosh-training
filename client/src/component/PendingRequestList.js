@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function PendingRequstList(){
+export default function PendingRequstList() {
   const [listUser, setUser] = useState([]);
   const getList = async () => {
     try {
@@ -8,9 +8,9 @@ export default function PendingRequstList(){
         "http://localhost:4000/user/pendingapprovel",
         {
           method: "post",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            authorization: localStorage.token,
           },
         }
       );
@@ -31,6 +31,7 @@ export default function PendingRequstList(){
     try {
       await fetch("http://localhost:4000/user/accept", {
         method: "post",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
@@ -44,6 +45,7 @@ export default function PendingRequstList(){
     try {
       await fetch("http://localhost:4000/user/reject", {
         method: "post",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
@@ -87,4 +89,4 @@ export default function PendingRequstList(){
       </div>
     </div>
   );
-};
+}

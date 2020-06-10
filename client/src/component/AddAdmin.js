@@ -26,8 +26,9 @@ export default function AddAdmin(props){
       password,
       role,
     ];
-    const response = await fetch("http://localhost:4000/user/signup", {
+    const response = await fetch("http://localhost:4000/user/addadmin", {
       method: "post",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: nameval,
