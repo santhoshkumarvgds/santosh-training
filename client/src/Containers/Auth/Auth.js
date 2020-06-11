@@ -56,13 +56,13 @@ class Auth {
   }
 
   async logout() {
+    // this.authenticateStatus = false;
     const response = await fetch("http://localhost:4000/user/logout", {
       method: "post",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
     const body = await response.json();
-    // alert(body.status);
     if (body.status) {
       history.push("/");
     } else {
@@ -79,8 +79,7 @@ class Auth {
       },
     });
     const body = await response.json();
-    // alert(body.role);
-    this.authenticateStatus = body.role;
+    this.authenticateStatus = body.role.toLowerCase();
     return body;
   }
   isAuthenticate() {
