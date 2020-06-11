@@ -62,6 +62,7 @@ class Auth {
       headers: { "Content-Type": "application/json" },
     });
     const body = await response.json();
+    // alert(body.status);
     if (body.status) {
       history.push("/");
     } else {

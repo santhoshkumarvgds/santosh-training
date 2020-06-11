@@ -15,7 +15,7 @@ const NoMatch = () => {
 
 export default function App(){
   return (
-    <Context>
+    <>
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/login" component={Login} />
@@ -43,6 +43,6 @@ export default function App(){
 
         <Route component={NoMatch} />
       </Switch>
-    </Context>
+    </>
   );
 };

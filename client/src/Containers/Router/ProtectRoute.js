@@ -12,11 +12,10 @@ export default function ProtectRoute({ component: Component, roles, ...rest }) {
         // alert(
         //   role + " " + roles + " " + loginStatus + " " + Auth.authenticateStatus
         // );
-        if (role == roles) {
-          // alert(role);
+        if (Auth.authenticateStatus == roles) {
           return <Component {...props} />;
         }
-         if (
+        if (
           Auth.authenticateStatus == undefined &&
           role == undefined &&
           !loginStatus
@@ -26,6 +25,17 @@ export default function ProtectRoute({ component: Component, roles, ...rest }) {
               to={{
                 pathname: "/",
                 state: { from: props.location },
+              }}
+            />
+          );
+        } else if (role) {
+          return (
+            <Redirect
+              to={{
+                pathname: Auth.authenticateStatus,
+                state: {
+                  from: props.location,
+                },
               }}
             />
           );

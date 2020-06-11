@@ -5,8 +5,8 @@ import Home from './home';
 
 export default function SellerHome(){
   return (
-    <Context>
+    <>
       <Home />
-    </Context>
+    </>
   );
 };
