@@ -13,7 +13,7 @@ const NoMatch = () => {
   return <div>404</div>;
 };
 
-export default function App(){
+export default function App() {
   return (
     <>
       <Switch>
@@ -24,19 +24,19 @@ export default function App(){
         <ProtectRoute
           exact
           path="/admin"
-          roles={["Admin"]}
+          roles={["admin"]}
           component={AdminHome}
         />
         <ProtectRoute
           exact
           path="/user"
-          roles={["User"]}
+          roles={["user"]}
           component={UserHome}
         />
         <ProtectRoute
           exact
           path="/seller"
-          roles={["Seller"]}
+          roles={["seller"]}
           component={SellerHome}
         />
         <Route exact path="/pendingapprovel" component={Pendingapprovel} />
@@ -45,4 +45,4 @@ export default function App(){
       </Switch>
     </>
   );
-};
+}
