@@ -79,7 +79,7 @@ export default function UserProduct(props) {
           title="click to view all product"
           className="left"
           onClick={() => {
-           allproduct()
+            allproduct();
           }}
         >
           All product
@@ -98,19 +98,25 @@ export default function UserProduct(props) {
           </form>
         </div>
         <br />
-          <React.Fragment>
-            {list.map((item) => (
-              <div key={item.id} className="list">
-                <h3>{item.product_name}</h3>
-                <img src={item.product_image}/>
-                <p>Rs.{item.product_prize}</p>
-                <p>{item.product_companyname}</p>
-                {item.product_assured?<p className="product-assured">{item.product_assured}</p>:<p className="product-assured">...</p>}
-                <a onClick={() => clickProduct(item.id)}>view more </a>
-
-              </div>
-            ))}
-          </React.Fragment>
+        <React.Fragment>
+          {list.map((item) => (
+            <div key={item.id} className="list">
+              <img
+                src={`http://localhost:4000/${item.product_image}`}
+                width="100px"
+              />
+              <h3>{item.product_name}</h3>
+              <p>Rs.{item.product_prize}</p>
+              <p>{item.product_companyname}</p>
+              {item.product_assured ? (
+                <p className="product-assured">{item.product_assured}</p>
+              ) : (
+                <p className="product-assured">...</p>
+              )}
+              <a onClick={() => clickProduct(item.id)}>view more </a>
+            </div>
+          ))}
+        </React.Fragment>
       </div>
     </Context>
   );

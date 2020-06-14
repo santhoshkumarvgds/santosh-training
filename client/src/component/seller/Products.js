@@ -30,13 +30,19 @@ export default function UserProduct() {
       <div className="product-list">
         {list.map((item) => (
           <div key={item.id} className="list">
-                <h3>{item.product_name}</h3>
-                <img src={item.product_image}/>
-                <p>Rs.{item.product_prize}</p>
-                <p>{item.product_companyname}</p>
-                {item.product_assured?<p className="product-assured">{item.product_assured}</p>:<p className="product-assured">...</p>}
-
-              </div>
+            <img
+              src={`http://localhost:4000/${item.product_image}`}
+              width="100px"
+            />
+            <h3>{item.product_name}</h3>
+            <p>Rs.{item.product_prize}</p>
+            <p>{item.product_companyname}</p>
+            {item.product_assured ? (
+              <p className="product-assured">{item.product_assured}</p>
+            ) : (
+              <p className="product-assured">...</p>
+            )}
+          </div>
         ))}
       </div>
     </React.Fragment>
