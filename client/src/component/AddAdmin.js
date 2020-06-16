@@ -38,13 +38,7 @@ export default function AddAdmin(props){
       }),
     });
     const body = await response.json();
-    if (body.message === "Mail exists") {
-      alert("Mail exists");
-    } else if (body.message === "success") {
-      alert("Signup success");
-    } else {
       alert(body.message);
-    }
   };
 
   return (
@@ -55,17 +49,6 @@ export default function AddAdmin(props){
 
           <input
             className="box"
-            type="text"
-            name="name"
-            value={name}
-            placeholder="Name"
-            required
-            onChange={(e) => handleChangename(e)}
-          />
-          <br />
-
-          <input
-            className="box"
             type="email"
             name="email"
             value={email}
@@ -73,27 +56,6 @@ export default function AddAdmin(props){
             required
             onChange={(e) => handleChangeEmail(e)}
           />
-          <br />
-
-          <input
-            className="box"
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Password"
-            required
-            onChange={(e) => handleChangePass(e)}
-          />
-          <br />
-          <select
-            value={role}
-            name="role"
-            onChange={(e) => handleChangeRole(e)}
-          >
-            <option value="Select">Select</option>
-            <option value="Admin">Admin</option>
-          </select>
-          <br />
           <br />
           <input
             type="submit"

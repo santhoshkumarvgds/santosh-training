@@ -13,11 +13,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const validuser = require("../middleware/checkvalid");
+const roleCheck = require("../middleware/roleCheck");
 
 const { product, order } = require("../models/database");
 
-router.post("/sellerproduct", validuser, async (req, res, next) => {
-  if (req.session.role == "Seller") {
+router.post("/sellerproduct", roleCheck("Seller"), async (req, res, next) => {
     try {
       const dbProductList = await product.findAll({
         where: { email: req.session.email },
@@ -43,11 +43,6 @@ router.post("/sellerproduct", validuser, async (req, res, next) => {
         status: "failed",
       });
     }
-  } else {
-    res.json({
-      status: "Role mismatch",
-    });
-  }
 });
 
 router.post("/allproduct", async (req, res, next) => {
@@ -107,10 +102,8 @@ router.post("/allproduct", async (req, res, next) => {
 // });
 router.post(
   "/productimage",
-  upload.single("productimage"),
+  upload.single("productimage"),roleCheck("Seller"),
   async (req, res, next) => {
-    console.log(req.file);
-    if (req.session.role == "Seller") {
       try {
         const temp = "temp";
         var ProductInsert = await product.create({
@@ -138,18 +131,11 @@ router.post(
           status: "failed",
         });
       }
-    } else {
-      res.json({
-        status: "Role mismatch",
-      });
-    }
   }
 );
 
-router.post("/addproduct", validuser, async (req, res, next) => {
-  if (req.session.role == "Seller") {
+router.post("/addproduct", roleCheck("Seller"), async (req, res, next) => {
     try {
-      const image = "update soon";
       const a = product.update(
         {
           product_name: req.body.productname,
@@ -170,15 +156,9 @@ router.post("/addproduct", validuser, async (req, res, next) => {
         status: "failed",
       });
     }
-  } else {
-    res.json({
-      status: "Role mismatch",
-    });
-  }
+
 });
-router.post("/deleteproduct", validuser, async (req, res, next) => {
-  console.log(req.session.role);
-  if (req.session.role == "Admin") {
+router.post("/deleteproduct", roleCheck("Admin"), async (req, res, next) => {
     try {
       await product.destroy({
         where: { id: req.body.id },
@@ -189,16 +169,11 @@ router.post("/deleteproduct", validuser, async (req, res, next) => {
     } catch (err) {
       console.log(err);
     }
-  } else {
-    res.json({
-      status: "role mismatch",
-    });
-  }
+
 });
 
-router.post("/assured", validuser, async (req, res, next) => {
+router.post("/assured", roleCheck("Admin"), async (req, res, next) => {
   try {
-    if (req.session.role == "Admin") {
       product.update(
         { product_assured: "Assured" },
         { where: { id: req.body.id } }
@@ -206,11 +181,7 @@ router.post("/assured", validuser, async (req, res, next) => {
       res.json({
         status: "assured",
       });
-    } else {
-      res.json({
-        message: "Role mismatch",
-      });
-    }
+
   } catch (error) {
     res.json({
       status: "Try again",
@@ -218,8 +189,7 @@ router.post("/assured", validuser, async (req, res, next) => {
   }
 });
 
-router.post("/placeorder", async (req, res, next) => {
-  if (req.session.role == "User") {
+router.post("/placeorder",roleCheck("User"), async (req, res, next) => {
     try {
       const dbProductList = await product.findAll({
         where: { id: req.body.id },
@@ -239,15 +209,9 @@ router.post("/placeorder", async (req, res, next) => {
         status: "failed",
       });
     }
-  } else {
-    res.json({
-      status: "Role Mismatch",
-    });
-  }
 });
 
-router.post("/orders", async (req, res, next) => {
-  if (req.session.role == "User") {
+router.post("/orders", roleCheck("User"),async (req, res, next) => {
     try {
       const dbProductList = await order.findAll({
         where: { email: req.session.email },
@@ -262,11 +226,6 @@ router.post("/orders", async (req, res, next) => {
         status: "failed",
       });
     }
-  } else {
-    res.json({
-      status: "Role Mismatch",
-    });
-  }
 });
 
 router.post("/getproduct", async (req, res) => {

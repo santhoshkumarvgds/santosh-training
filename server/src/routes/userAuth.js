@@ -93,7 +93,7 @@ router.post("/login", async (req, res, next) => {
         if (result) {
           if (
             dbUserRole.pendingrequest == "false" &&
-            dbUserRole.status != "reject"
+            dbUserRole.status != "reject" && dbUserRole.status !="pending"
           ) {
             // var jwtEmail = dbUser.email;
             // var jwtName = dbUser.name;

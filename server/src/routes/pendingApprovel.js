@@ -3,28 +3,17 @@ const express = require("express");
 const router = express.Router();
 
 const { users, userrole } = require("../models/database.js");
-const validuser = require("../middleware/checkvalid");
+const roleCheck = require("../middleware/roleCheck");
 
-router.post("/pendingapprovel", validuser, async (req, res, next) => {
-  try {
-    // console.log(req.session.role);
-    if (req.session.role == "Admin") {
-      const dbTrue = "true";
+router.post("/pendingapprovel", roleCheck("Admin"), async (req, res, next) => {
+      const pendingStatus = "true";
       const dbPendingList = await userrole.findAll({
-        where: { pendingrequest: dbTrue },
+        where: { pendingrequest: pendingStatus },
         attributes: ["email"],
       });
       res.json({
         emaillist: dbPendingList,
       });
-    } else {
-      res.json({
-        message: "Role mismatch",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
 });
 
 module.exports = {

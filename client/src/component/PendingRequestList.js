@@ -27,35 +27,44 @@ export default function PendingRequstList() {
   useEffect(() => {
     getList();
   }, []);
-  const accept = async (email) => {
+  const acceptreject = async (email,status) => {
     try {
-      await fetch("http://localhost:4000/user/accept", {
+      const response = await fetch("http://localhost:4000/user/acceptreject", {
         method: "post",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
+          status:status,
         }),
       });
+      const data = await response.json();
+      if(data.status){
+        alert(data.status);
+        setUser(listUser.filter((item) => item != email))
+      }
+      else{
+        alert("Try again");
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  const reject = async (email) => {
-    try {
-      await fetch("http://localhost:4000/user/reject", {
-        method: "post",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-        }),
-      });
-      // setUser(listUser.filter((item)=>item != email))
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const reject = async (email) => {
+  //   try {
+  //     await fetch("http://localhost:4000/user/reject", {
+  //       method: "post",
+  //       credentials: "include",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         email: email,
+  //       }),
+  //     });
+  //     // setUser(listUser.filter((item)=>item != email))
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   return (
     <div className="PendingRequstList">
       <p>PendingRequstList</p>
@@ -73,12 +82,12 @@ export default function PendingRequstList() {
               <tr key={item}>
                 <td>{item}</td>
                 <td>
-                  <a href="#/" onClick={() => accept(item)}>
+                  <a onClick={() => acceptreject(item,"Accept")}>
                     Accept
                   </a>
                 </td>
                 <td>
-                  <a href="#/" onClick={() => reject(item)}>
+                  <a  onClick={() => acceptreject(item,"reject")}>
                     Reject
                   </a>
                 </td>

@@ -25,6 +25,12 @@ app.use(
   })
 );
 
+app.use(function (err,req,res,next) {
+//  console.error(err.stack);
+  console.log(err);
+  res.status(500);
+})
+
 //local module
 const { userAuth } = require("./routes/userAuth");
 const { getinfo } = require("./routes/getinfo");

@@ -8,6 +8,7 @@ import UserHome from "./Containers/Home/UserHome";
 import SellerHome from "./Containers/Home/SellerHome";
 import ProtectRoute from "./Containers/Router/ProtectRoute";
 import  ViewProduct from './component/ViewProduct';
+import  InviteAdmin from './component/inviteAdmin';
 import Context from './Containers/Context/Context';
 
 const NoMatch = () => {
@@ -42,6 +43,7 @@ export default function App() {
         />
         <Route exact path="/pendingapprovel" component={Pendingapprovel} />
         <Route exact path="/product" component={ViewProduct}/>
+        <Route exact path="/admin/invite" component={InviteAdmin}/>
         <Route component={NoMatch} />
       </Switch>
     </Context>

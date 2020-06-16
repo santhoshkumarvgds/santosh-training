@@ -2,14 +2,15 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer")
 
 const { users, userrole } = require("../models/database.js");
-const validuser = require("../middleware/checkvalid");
+const roleCheck = require("../middleware/roleCheck");
 
-router.post("/addadmin", validuser, async (req, res, next) => {
-  if (req.session.role == "Admin") {
+router.post("/addadmin",roleCheck("Admin"), async (req, res, next) => {
     try {
       var dbEmail = await users.findOne({
         where: { email: req.body.email },
@@ -21,50 +22,111 @@ router.post("/addadmin", validuser, async (req, res, next) => {
         });
       }
     } catch (e) {
-      bcrypt.hash(req.body.password, 10, async (err, hash) => {
-        if (err) {
-          return res.json({
-            message: "error",
-          });
-        } else {
-          var isRole = req.body.role;
-          status = "approved";
+          status = "pending";
           pendingRequest = "false";
-          try {
-            if (isRole == "Admin") {
+          var mykey = crypto.createCipher('aes-128-cbc',process.env.JWT_KEY);
+          var mystr = mykey.update(req.body.email,'utf8','hex');
+          mystr+=mykey.final('hex');
               var dbInsert = await users.create({
-                name: req.body.name,
+                name: "Not specified",
                 email: req.body.email,
-                password: hash,
+                password: "Not specified",
               });
               var dbUserRoleInsert = await userrole.create({
                 email: req.body.email,
-                role: req.body.role,
+                role: "Admin",
                 pendingrequest: pendingRequest,
                 status: status,
               });
-              res.json({
-                message: "success",
-              });
-            } else {
-              res.json({
-                message: "Role mismatch",
-              });
-            }
-          } catch (e) {
-            res.json({
-              message: "error",
-            });
-          }
+              var transporter = nodemailer.createTransport({
+                  service: 'gmail',
+                  auth: {
+                    user: process.env.EMAIL_ID,
+                    pass: process.env.EMAIL_PASS
+                  }
+                });
+
+                var mailOptions = {
+                  from: process.env.EMAIL_ID,
+                  to: req.body.email,
+                  subject: 'Inviting Admin',
+                  text: "http://localhost:3000/admin/invite?hash="+mystr
+                };
+
+                transporter.sendMail(mailOptions, function(error, info){
+                  if (error) {
+                    res.json({
+                      message : "mail not send Try again"
+                    })
+                  } else {
+                    res.json({
+                       message: "mail sent",
+                     });
+                  }
+                });
         }
-      });
-    }
-  } else {
-    res.json({
-      message: "Role mismatch",
-    });
-  }
 });
+
+router.post("/invitecheck",async(req,res)=>{
+  try{
+    var mykey = crypto.createDecipher('aes-128-cbc',process.env.JWT_KEY);
+    var mystr = mykey.update(req.body.hash,'hex','utf8');
+    mystr+=mykey.final('utf8');
+    console.log(mystr);
+    res.json({
+      status : "success",
+      email : mystr
+    });
+
+  }catch(err){
+    res.json({
+      status : "failed"
+    })
+  }
+
+});
+
+router.post("/inviteaccept",async(req,res)=>{
+  console.log(req.body.email+" "+req.body.name);
+  try{
+    const status ="Accept";
+    bcrypt.hash(req.body.password, 10, async (err, hash) => {
+      if(err){
+        res.json({
+          status : "Try Again"
+        })
+      }
+      else{
+        users.update(
+        {
+         name : req.body.name,
+         password:hash
+        },
+        { where: { email: req.body.email } }
+      );
+
+      userrole.update(
+        {
+         status : status
+        },
+        { where: { email: req.body.email } }
+      );
+    res.json({
+      status : "success"
+    });
+      }
+    });
+
+
+  }catch(err){
+    console.log(err);
+    res.json({
+      status : "failed"
+    })
+  }
+
+});
+
 
 module.exports = {
   addAdmin: router,
