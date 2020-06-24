@@ -1,0 +1,40 @@
+<div class="product-list">
+        <h3
+          title="click to view all product"
+          class="left"
+          (click)="allproduct()"
+        >
+          All product
+        </h3>
+        <br />
+        <div class="right">
+          <form (submit)="searchSubmit($event)">
+            <input
+              type="text"
+              name="search"
+              placeholder="search"
+              [(ngModel)]="searchValue"
+              required
+            />
+            <input type="submit" />
+          </form>
+        </div>
+        <br />
+        <div *ngFor="let item of lists" class="allproduct-list">
+            <div key={item.id} class="list">
+            <img
+                src="http://localhost:4000/{{item.product_image}}"
+                style="width: 100px;"
+            />
+              <h3>{{item.product_name}}</h3>
+              <p>Rs.{{item.product_prize}}</p>
+              <p>{{item.product_companyname}}</p>
+              <div *ngIf="item.product_assured;else noassured">
+                <p class="product-assured">{{item.product_assured}}</p>
+              </div>
+              <ng-template #noassured>
+                  <p class="product-assured">...</p>
+              </ng-template>
+              <a (click)="clickProduct(item.id)">view more </a>
+            </div>
+        </div>

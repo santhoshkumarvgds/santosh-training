@@ -1,0 +1,29 @@
+<div class="PendingRequstList">
+  <p>PendingRequstList</p>
+  <div class="table">
+    <table>
+      <thead>
+        <tr key="thead">
+          <th>User Mail</th>
+          <th>Accept</th>
+          <th>Reject</th>
+        </tr>
+      </thead>
+      <tbody key="tbody" *ngFor="let item of values">
+        <tr key="{item}">
+          <td>{{item}}</td>
+          <td>
+            <a>
+              Accept
+            </a>
+          </td>
+          <td>
+            <a>
+              Reject
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

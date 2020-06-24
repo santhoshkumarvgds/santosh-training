@@ -1,0 +1,38 @@
+<div class="section">
+      <div class="form">
+        <form (submit)="onLogin()">
+          <h1>LOG IN</h1>
+          <input
+            class="box"
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            [(ngModel)]="email"
+          />
+          <br />
+
+          <input
+            class="box"
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            [(ngModel)]="password"
+          />
+          <br />
+          <input
+            type="submit"
+            id="submitDetails"
+            name="submitDetails"
+            value="Submit"
+          />
+          <br />
+          <p>Have not account yet?</p>
+          <a routerLink="/signup"
+          >
+            Sign up
+          </a>
+        </form>
+      </div>
+    </div>

@@ -1,0 +1,24 @@
+<div class="section">
+      <div class="form">
+        <form (submit)="handleSubmit($event)">
+          <h1>Add Admin</h1>
+
+          <input
+            class="box"
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            [(ngModel)]="email"
+          />
+          <br />
+          <input
+            type="submit"
+            id="submitDetails"
+            name="submitDetails"
+            value="Submit"
+          />
+          <br />
+        </form>
+      </div>
+    </div>

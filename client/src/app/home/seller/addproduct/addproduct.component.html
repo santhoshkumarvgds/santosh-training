@@ -1,0 +1,64 @@
+<div className="product">
+          <div className="product add">
+            <form (submit)="add($event)">
+              <input
+                type="text"
+                name="productName"
+                placeholder="Product name"
+
+                [(ngModel)]="productName"
+              />
+              <br />
+              <br />
+              <input
+                type="file"
+                name="productImage"
+                accept="image/*"
+                (change)="handleChangefile($event)"
+              />
+              <br />
+              <br />
+
+              <input
+                type="text"
+                name="productPrize"
+                placeholder="product prize"
+                [(ngModel)]="productPrize"
+              />
+              <br />
+              <br />
+              <input
+                type="text"
+                name="productCategory"
+                placeholder="productCategory"
+                [(ngModel)]="productCategory"
+              />
+              <br />
+              <br />
+              <input
+                type="text"
+                name="productCompanyName"
+                placeholder="productCompanyName"
+                [(ngModel)]="productCompanyName"
+              />
+              <br />
+              <br />
+              <input
+                type="text"
+                name="productWarranty"
+                placeholder="productWarranty"
+                [(ngModel)]="productWarranty"
+              />
+              <br />
+              <br />
+              <textarea
+                name="productDescription"
+                placeholder="product details & description"
+                [(ngModel)]="productDescription"
+              ></textarea>
+              <br />
+              <br />
+              <input type="submit" />
+            </form>
+          </div>
+        </div>

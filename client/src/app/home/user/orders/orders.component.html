@@ -1,0 +1,25 @@
+<div className="orders">
+  <p>Your Orders</p>
+  <div className="table">
+    <table>
+      <thead>
+        <tr key="thead">
+          <th>Product Name</th>
+          <th>Prize</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody key="tbody" *ngFor="let item of products">
+        <tr key="{item}">
+          <td>{{ item.product_name }}</td>
+          <td>
+            {{ item.product_prize }}
+          </td>
+          <td>
+            Not Delivered
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

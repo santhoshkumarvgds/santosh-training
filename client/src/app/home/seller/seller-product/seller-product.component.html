@@ -1,0 +1,18 @@
+<div *ngFor="let item of lists" class="allproduct-list">
+            <div key={item.id} class="list">
+            <img
+                src="http://localhost:4000/{{item.product_image}}"
+                style="width: 100px;"
+            />
+              <h3>{{item.product_name}}</h3>
+              <p>Rs.{{item.product_prize}}</p>
+              <p>{{item.product_companyname}}</p>
+              <div *ngIf="item.product_assured;else noassured">
+                <p class="product-assured">{{item.product_assured}}</p>
+              </div>
+              <ng-template #noassured>
+                  <p class="product-assured">...</p>
+              </ng-template>
+              <a class="view-more" (click)="clickProduct(item.id)">view more </a>
+            </div>
+        </div>

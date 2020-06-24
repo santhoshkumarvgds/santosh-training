@@ -1,0 +1,58 @@
+<div class="section">
+      <div class="form">
+        <form (submit)="onSubmit()">
+          <h1>SIGN UP</h1>
+
+          <input
+            class="box"
+            type="text"
+            name="name"
+            value={name}
+            placeholder="Name"
+            required
+            [(ngModel)]="name"
+          />
+          <br />
+
+          <input
+            class="box"
+            type="email"
+            name="email"
+            value={email}
+            placeholder="Email"
+            required
+            [(ngModel)]="email"
+          />
+          <br />
+
+          <input
+            class="box"
+            type="password"
+            name="password"
+            value={password}
+            placeholder="Password"
+            required
+            [(ngModel)]="password"
+          />
+          <br />
+          <select
+            value={role}
+            name="role"
+            [(ngModel)]="role"
+          >
+            <option value="Select">Select</option>
+            <option value="User">User</option>
+            <option value="Seller">Seller</option>
+          </select>
+          <br />
+          <br />
+          <input
+            type="submit"
+            id="submitDetails"
+            name="submitDetails"
+            value="Submit"
+          />
+          <br />
+        </form>
+      </div>
+    </div>
