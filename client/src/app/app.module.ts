@@ -18,10 +18,12 @@ import { OrdersComponent } from './home/user/orders/orders.component';
 import { AddproductComponent } from './home/seller/addproduct/addproduct.component';
 import { SellerProductComponent } from './home/seller/seller-product/seller-product.component';
 import { LogoutComponent } from './auth/logout/logout.component';
+import { NgxPayPalModule } from 'ngx-paypal';
+
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, SignupComponent, AdminComponent, SellerComponent, UserComponent, PendingApprovelComponent, GetinfoComponent, ProductComponent, ViewProductComponent, AddAdminComponent, PendingUserComponent, OrdersComponent, AddproductComponent, SellerProductComponent, LogoutComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, NgxPayPalModule],
   providers: [],
   bootstrap: [AppComponent],
 })
