@@ -1,0 +1,63 @@
+<div class="header">
+    <h3>Shoppy</h3>
+        <div class="right" *ngIf="loginStatus;else notLogin">
+            <a (click)="handleClick('product')">
+            Product
+            </a>
+            <a (click)="handleClick('getinfo')">
+                Get Info
+            </a>
+            <div *ngIf="role == 'Admin';">
+                <a (click)="handleClick('addAdmin')">
+                    Add Admin
+                </a>
+                <a (click)="handleClick('pendingUser')">
+                    Pending user
+                </a>
+            </div>
+            <div *ngIf="role == 'Seller'">
+                <a (click)="handleClick('addproduct')">
+                    Add Product
+                </a>
+            </div>
+            <div *ngIf="role == 'User'">
+                <a
+                (click)="handleClick('orders')"
+              >
+                Orders
+              </a>
+            </div>
+              <a class="logout-btn" (click)="logout()">
+                Logout
+              </a>
+        </div>
+    <ng-template #notLogin>
+        <div class="right">
+            <a routerLink="/login" class="login-btn">
+               Login
+             </a>
+        </div>
+    </ng-template>
+</div>
+<div class="body">
+  <container-element [ngSwitch]="render">
+    <ng-container *ngSwitchCase="'product'">
+      <app-product></app-product>
+    </ng-container>
+    <ng-container *ngSwitchCase="'getinfo'">
+      <app-getinfo></app-getinfo>
+    </ng-container>
+    <ng-container *ngSwitchCase="'addAdmin'">
+      <app-add-admin></app-add-admin>
+    </ng-container>
+    <ng-container *ngSwitchCase="'pendingUser'">
+      <app-pending-user></app-pending-user>
+    </ng-container>
+    <ng-container *ngSwitchCase="'addproduct'">
+      <app-addproduct></app-addproduct>
+    </ng-container>
+    <ng-container *ngSwitchCase="'orders'">
+      <app-orders></app-orders>
+    </ng-container>
+  </container-element>
+</div>

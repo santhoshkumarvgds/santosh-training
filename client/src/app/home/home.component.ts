@@ -1,18 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LogoutComponent } from '../../auth/logout/logout.component';
+import { LogoutComponent } from '../auth/logout/logout.component';
 
 @Component({
-  selector: 'app-seller',
-  templateUrl: './seller.component.html',
-  styleUrls: ['../../../assets/css/home.css'],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['../../assets/css/home.css'],
 })
-export class SellerComponent implements OnInit {
+export class HomeComponent implements OnInit {
   loginStatus: boolean = false;
   render: string = '';
+  role: string = '';
+  path:any ;
+  roleCheck: string ;
   constructor(private router: Router) {}
 
   async ngOnInit() {
+    this.path = window.location.href.split('/');
+    this.roleCheck = this.path[this.path.length - 1];
+    this.roleCheck == "user" ? this.render = 'product' : "";
     const response: any = await fetch('http://localhost:4000/user/getinfo', {
       method: 'post',
       credentials: 'include',
@@ -21,13 +27,10 @@ export class SellerComponent implements OnInit {
       },
     });
     const body: any = await response.json();
-    if ((body.role = 'Seller')) {
-      this.loginStatus = true;
-      this.render = "product";
-    }else if (body.role) {
-      this.router.navigate([body.role.toLowerCase()]);
-    } else {
-      this.router.navigate(['/login']);
+      this.role = body.role;
+    if ((body.role)) {
+        this.loginStatus = true;
+        this.render = 'product';
     }
   }
 
@@ -36,7 +39,7 @@ export class SellerComponent implements OnInit {
     user.logout();
   }
 
-  handleClick(a: string) {
+  handleClick(a: string): void {
     this.render = a;
   }
 }

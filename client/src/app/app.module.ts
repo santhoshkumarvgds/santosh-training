@@ -5,9 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { AdminComponent } from './home/admin/admin.component';
-import { SellerComponent } from './home/seller/seller.component';
-import { UserComponent } from './home/user/user.component';
+import { HomeComponent } from './home/home.component';
 import { PendingApprovelComponent } from './home/pending-approvel/pending-approvel.component';
 import { GetinfoComponent } from './getinfo/getinfo.component';
 import { ProductComponent } from './product/product.component';
@@ -22,7 +20,7 @@ import { NgxPayPalModule } from 'ngx-paypal';
 
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, SignupComponent, AdminComponent, SellerComponent, UserComponent, PendingApprovelComponent, GetinfoComponent, ProductComponent, ViewProductComponent, AddAdminComponent, PendingUserComponent, OrdersComponent, AddproductComponent, SellerProductComponent, LogoutComponent],
+  declarations: [AppComponent, LoginComponent, SignupComponent,HomeComponent, PendingApprovelComponent, GetinfoComponent, ProductComponent, ViewProductComponent, AddAdminComponent, PendingUserComponent, OrdersComponent, AddproductComponent, SellerProductComponent, LogoutComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, NgxPayPalModule],
   providers: [],
   bootstrap: [AppComponent],

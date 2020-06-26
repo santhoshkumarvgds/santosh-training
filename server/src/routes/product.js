@@ -17,30 +17,29 @@ const roleCheck = require("../middleware/roleCheck");
 
 const { product, order } = require("../models/database");
 
-router.post("/sellerproduct", roleCheck("Seller"), async (req, res, next) => {
-      const dbProductList = await product.findAll({
-        where: { email: req.session.email },
-        attributes: [
-          "id",
-          "email",
-          "product_name",
-          "product_image",
-          "product_prize",
-          "product_category",
-          "product_companyname",
-          "product_warranty",
-          "product_assured",
-          "product_description",
-        ],
-      });
-      res.json({
-        productlist: dbProductList,
-      });
-});
+// router.post("/sellerproduct", roleCheck("Seller"), async (req, res, next) => {
+//       const dbProductList = await product.findAll({
+//         where: { email: req.session.email },
+//         attributes: [
+//           "id",
+//           "email",
+//           "product_name",
+//           "product_image",
+//           "product_prize",
+//           "product_category",
+//           "product_companyname",
+//           "product_warranty",
+//           "product_assured",
+//           "product_description",
+//         ],
+//       });
+//       res.json({
+//         productlist: dbProductList,
+//       });
+// });
 
 router.post("/allproduct", async (req, res, next) => {
-    const dbProductList = await product.findAll({
-      attributes: [
+    const attributes = [
         "id",
         "email",
         "product_name",
@@ -50,10 +49,20 @@ router.post("/allproduct", async (req, res, next) => {
         "product_companyname",
         "product_warranty",
         "product_assured",
-        "product_description",
-      ],
-    });
-    console.log(dbProductList[0].product_image);
+        "product_description"
+      ];
+      var dbProductList;
+      if(req.session.role== "Seller"){
+        dbProductList = await product.findAll({
+          where: { email: req.session.email },
+          attributes: attributes
+        });
+      }
+      else{
+          dbProductList = await product.findAll({
+          attributes: attributes
+        });
+      }
     res.json({
       productlist: dbProductList,
     });
