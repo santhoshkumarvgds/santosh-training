@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+
 import { Router } from '@angular/router';
-import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-
-declare let paypal: any;
-
 @Component({
   selector: 'app-view-product',
   templateUrl: './view-product.component.html',
@@ -22,10 +19,12 @@ export class ViewProductComponent implements OnInit {
   product = false;
   path = window.location.href.split('/');
   idval = this.path[this.path.length - 1];
-  addScript: boolean = false;
-  paypalLoad: boolean = true;
 
-  constructor(private router: Router) {}
+  handler: any = null;
+
+  constructor(
+    private router: Router
+  ) {}
 
   share(): void {
     alert('Copy the link and share \n' + window.location.href);
@@ -83,6 +82,7 @@ export class ViewProductComponent implements OnInit {
   }
 
   async ngOnInit() {
+
     const response = await fetch('http://localhost:4000/user/getproduct', {
       method: 'post',
       credentials: 'include',
@@ -105,41 +105,44 @@ export class ViewProductComponent implements OnInit {
     this.role = data.role;
     this.product = true;
     if (this.role == 'User') {
-      this.addPaypalScript().then(() => {
-        paypal.Button.render(this.paypalConfig, '#btn');
-        this.paypalLoad = false;
-      });
+      this.loadStripe();
     }
   }
 
-  addPaypalScript() {
-    this.addScript = true;
-    return new Promise((resolve, reject) => {
-      let scripttagElement = document.createElement('script');
-      scripttagElement.src = 'https://www.paypalobjects.com/api/checkout.js';
-      scripttagElement.onload = resolve;
-      document.body.appendChild(scripttagElement);
+  pay() {
+    const amount = parseInt(this.prize)*100;
+    var handler = (<any>window).StripeCheckout.configure({
+      key:
+        'pk_test_51GyH8aCqbRdyZuzQWnyh8L5fLU3IeYkkUCxN6GviwM8aEw6A2NBVJ0fBeSbmdWX54LOq7iYGFCKtfVyntuXd79bq00GALeFfKm',
+      locale: 'auto',
+      token: function (token: any) {
+        console.log(token);
+        alert('Token Created!!');
+      },
     });
-  }
 
-  paypalConfig = {
-    env: 'sandbox',
-    client: {
-      sandbox:
-        'AUy121i9d23YkkACmiqj61meo4XLxC1O8HqNEBY8CCNt-VmO0LglEYvCoV-uT0pY6KKaRu5L06RkZ8yx',
-      production: '', //your key
-    },
-    commit: true,
-    payment: (data, actions) => {
-      return actions.payment.create({
-        payment: {
-          transactions: [{ amount: { total: this.prize, currency: 'INR' } }],
-        },
-      });
-    },
-    onAuthorize: (data, actions) => {
-      return actions.payment.execute().then(async (payment) => {
-        const response: any = await fetch(
+    handler.open({
+      name: 'shoppy',
+      description: this.name,
+      amount: amount,
+      currency : "INR"
+    });
+
+  }
+  loadStripe() {
+
+    if(!window.document.getElementById('stripe-script')) {
+      var s = window.document.createElement("script");
+      s.id = "stripe-script";
+      s.type = "text/javascript";
+      s.src = "https://checkout.stripe.com/checkout.js";
+      s.onload = () => {
+        this.handler = (<any>window).StripeCheckout.configure({
+          key:
+            'pk_test_51GyH8aCqbRdyZuzQWnyh8L5fLU3IeYkkUCxN6GviwM8aEw6A2NBVJ0fBeSbmdWX54LOq7iYGFCKtfVyntuXd79bq00GALeFfKm',
+          locale: 'auto',
+          token: async function (token: any) {
+            const response: any = await fetch(
           'http://localhost:4000/user/placeorder',
           {
             method: 'post',
@@ -158,7 +161,11 @@ export class ViewProductComponent implements OnInit {
         } else {
           alert('Try again');
         }
-      });
-    },
-  };
+          },
+        });
+      }
+
+      window.document.body.appendChild(s);
+    }
+  }
 }

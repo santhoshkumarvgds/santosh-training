@@ -1,4 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
+// import { StripeCheckoutModule } from 'ng-stripe-checkout';
+// import { StripeCheckoutModule } from 'ng-stripe-checkout';
+import { NgxStripeModule } from 'ngx-stripe';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,14 +19,30 @@ import { OrdersComponent } from './home/user/orders/orders.component';
 import { AddproductComponent } from './home/seller/addproduct/addproduct.component';
 import { SellerProductComponent } from './home/seller/seller-product/seller-product.component';
 import { LogoutComponent } from './auth/logout/logout.component';
-import { NgxPayPalModule } from 'ngx-paypal';
-
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, SignupComponent,HomeComponent, PendingApprovelComponent, GetinfoComponent, ProductComponent, ViewProductComponent, AddAdminComponent, PendingUserComponent, OrdersComponent, AddproductComponent, SellerProductComponent, LogoutComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, NgxPayPalModule],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    SignupComponent,
+    HomeComponent,
+    PendingApprovelComponent,
+    GetinfoComponent,
+    ProductComponent,
+    ViewProductComponent,
+    AddAdminComponent,
+    PendingUserComponent,
+    OrdersComponent,
+    AddproductComponent,
+    SellerProductComponent,
+    LogoutComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

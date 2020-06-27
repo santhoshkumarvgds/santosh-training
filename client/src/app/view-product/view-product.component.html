@@ -1,81 +1,62 @@
 <div class="header">
-        <div class="left">
-          <a
-            class="logout-btn"
-            (click)="back()"
-          >
-            Back
-          </a>
-        </div>
-        <div class="right">
-          <a
-            class="logout-btn"
-            (click)="share()"
-          >
-            Share
-          </a>
-        </div>
+  <div class="left">
+    <a class="logout-btn" (click)="back()">
+      Back
+    </a>
+  </div>
+  <div class="right">
+    <a class="logout-btn" (click)="share()">
+      Share
+    </a>
+  </div>
+  <br />
+  <br />
+</div>
+<div *ngIf="product; else noproduct">
+  <div class="single-product">
+    <div class="img">
+      <img src="http://localhost:4000/{{ image }}" />
+    </div>
+    <h1>{{ name }}</h1>
+    <br />
+    <h2>Rs. {{ prize }}</h2>
+    <h3>Brand : {{ companyname }}</h3>
+    <h3>warranty : {{ warranty }}</h3>
+    <h3>{{ assured }}</h3>
+    <h3>{{ description }}</h3>
+    <container-element [ngSwitch]="role">
+      <ng-container *ngSwitchCase="'Admin'">
+        <a
+          title="click to open seller mail"
+          class="mail"
+          href="mailto:{{ email }}"
+        >
+          seller : {{ email }}
+        </a>
+        <h3 class="delete" (click)="deleteProduct()">
+          delete
+        </h3>
         <br />
-        <br />
-      </div>
-      <div *ngIf="product;else noproduct">
-        <div class="single-product">
-        <div class="img">
-        <img
-          src="http://localhost:4000/{{image}}"
-        />
-        </div>
-        <h1>{{name}}</h1>
-        <br />
-        <h2>Rs. {{prize}}</h2>
-        <h3>Brand : {{companyname}}</h3>
-        <h3>warranty : {{warranty}}</h3>
-        <h3>{{assured}}</h3>
-        <h3>{{description}}</h3>
-        <container-element [ngSwitch]="role">
-            <ng-container *ngSwitchCase="'Admin'">
-              <a
-                title="click to open seller mail"
-                class="mail"
-                href="mailto:{{email}}"
-              >
-                seller : {{email}}
-              </a>
-              <h3 class="delete" (click)="deleteProduct()">
-                delete
-              </h3>
-              <br />
-              <h3 class="assured" (click)="assuredProduct()">
-                assured
-              </h3>
-
-            </ng-container>
-            <ng-container *ngSwitchCase="'User'">
-              <h3
-              class="buy-product" id="btn"
-              >
-              </h3>
-            </ng-container>
-            <ng-container *ngSwitchCase="'Seller'">
-               <h3
-              class="buy"
-              >
-                seller account
-              </h3>
-
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-              <h3
-            class="buy"
-           routerLink=""
-          >
-            Login to Buy
-          </h3>
-
-            </ng-container>
-        </container-element>
-      </div>
-      </div>
-      <ng-template #noproduct>
-
-        </ng-template>
+        <h3 class="assured" (click)="assuredProduct()">
+          assured
+        </h3>
+      </ng-container>
+      <ng-container *ngSwitchCase="'User'">
+        <h3 class="buy" (click)="pay()">
+          Buy Now
+        </h3>
+      </ng-container>
+      <ng-container *ngSwitchCase="'Seller'">
+        <h3 class="buy">
+          seller account
+        </h3>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <h3 class="buy" routerLink="">
+          Login to Buy
+        </h3>
+      </ng-container>
+    </container-element>
+  </div>
+</div>
+<ng-template #noproduct> </ng-template>
