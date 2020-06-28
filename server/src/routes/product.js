@@ -162,7 +162,7 @@ router.post("/assured", roleCheck("Admin"), async (req, res, next) => {
 
 router.post("/placeorder",roleCheck("User"), async (req, res, next) => {
       const dbProductList = await product.findAll({
-        where: { id: req.body.id },
+        where: { id: req.session.itemid },
         attributes: ["product_name", "product_prize"],
       });
       var dbInsert = await order.create({
@@ -186,6 +186,7 @@ router.post("/orders", roleCheck("User"),async (req, res, next) => {
 });
 
 router.post("/getproduct", async (req, res) => {
+  req.session.itemid = req.body.id;
     const dbProductList = await product.findOne({
       where: { id: req.body.id },
       attributes: [

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 @Component({
@@ -22,9 +22,7 @@ export class ViewProductComponent implements OnInit {
 
   handler: any = null;
 
-  constructor(
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   share(): void {
     alert('Copy the link and share \n' + window.location.href);
@@ -82,7 +80,6 @@ export class ViewProductComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     const response = await fetch('http://localhost:4000/user/getproduct', {
       method: 'post',
       credentials: 'include',
@@ -109,40 +106,33 @@ export class ViewProductComponent implements OnInit {
     }
   }
 
+  async order(){
+    const response: any = await fetch('http://localhost:4000/user/placeorder', {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: this.idval,
+      }),
+    });
+    const data: any = await response.json();
+    if (data.status == 'success') {
+      alert('Placed Your Order');
+    } else {
+      alert('Try again');
+    }
+  }
+
   pay() {
-    const amount = parseInt(this.prize)*100;
+    const amount = parseInt(this.prize) * 100;
     var handler = (<any>window).StripeCheckout.configure({
       key:
         'pk_test_51GyH8aCqbRdyZuzQWnyh8L5fLU3IeYkkUCxN6GviwM8aEw6A2NBVJ0fBeSbmdWX54LOq7iYGFCKtfVyntuXd79bq00GALeFfKm',
       locale: 'auto',
-      token: function (token: any) {
-        console.log(token);
-        alert('Token Created!!');
-      },
-    });
-
-    handler.open({
-      name: 'shoppy',
-      description: this.name,
-      amount: amount,
-      currency : "INR"
-    });
-
-  }
-  loadStripe() {
-
-    if(!window.document.getElementById('stripe-script')) {
-      var s = window.document.createElement("script");
-      s.id = "stripe-script";
-      s.type = "text/javascript";
-      s.src = "https://checkout.stripe.com/checkout.js";
-      s.onload = () => {
-        this.handler = (<any>window).StripeCheckout.configure({
-          key:
-            'pk_test_51GyH8aCqbRdyZuzQWnyh8L5fLU3IeYkkUCxN6GviwM8aEw6A2NBVJ0fBeSbmdWX54LOq7iYGFCKtfVyntuXd79bq00GALeFfKm',
-          locale: 'auto',
-          token: async function (token: any) {
-            const response: any = await fetch(
+      token: async function () {
+        const response: any = await fetch(
           'http://localhost:4000/user/placeorder',
           {
             method: 'post',
@@ -161,9 +151,30 @@ export class ViewProductComponent implements OnInit {
         } else {
           alert('Try again');
         }
-          },
+      },
+    });
+
+    handler.open({
+      name: 'shoppy',
+      description: this.name,
+      amount: amount,
+      currency: 'INR',
+    });
+  }
+  loadStripe() {
+    if (!window.document.getElementById('stripe-script')) {
+      var s = window.document.createElement('script');
+      s.id = 'stripe-script';
+      s.type = 'text/javascript';
+      s.src = 'https://checkout.stripe.com/checkout.js';
+      s.onload = () => {
+        this.handler = (<any>window).StripeCheckout.configure({
+          key:
+            'pk_test_51GyH8aCqbRdyZuzQWnyh8L5fLU3IeYkkUCxN6GviwM8aEw6A2NBVJ0fBeSbmdWX54LOq7iYGFCKtfVyntuXd79bq00GALeFfKm',
+          locale: 'auto',
+          token: function (token: any) {},
         });
-      }
+      };
 
       window.document.body.appendChild(s);
     }
