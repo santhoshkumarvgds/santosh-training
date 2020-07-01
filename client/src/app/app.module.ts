@@ -1,7 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 // import { StripeCheckoutModule } from 'ng-stripe-checkout';
 // import { StripeCheckoutModule } from 'ng-stripe-checkout';
-import { NgxStripeModule } from 'ngx-stripe';
+// import { NgxStripeModule } from 'ngx-stripe';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +22,7 @@ import { OrdersComponent } from './home/user/orders/orders.component';
 import { AddproductComponent } from './home/seller/addproduct/addproduct.component';
 import { SellerProductComponent } from './home/seller/seller-product/seller-product.component';
 import { LogoutComponent } from './auth/logout/logout.component';
+import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
 
 @NgModule({
   declarations: [
@@ -36,11 +40,15 @@ import { LogoutComponent } from './auth/logout/logout.component';
     AddproductComponent,
     SellerProductComponent,
     LogoutComponent,
+    AdminInviteComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    InfiniteScrollModule,
+    NgxSpinnerModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

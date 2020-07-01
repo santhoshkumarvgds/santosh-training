@@ -5,6 +5,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { PendingApprovelComponent } from './home/pending-approvel/pending-approvel.component';
 import { ViewProductComponent } from './view-product/view-product.component';
 import { HomeComponent } from './home/home.component';
+import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'user', component: HomeComponent },
   { path: 'pendingapprovel', component: PendingApprovelComponent },
   { path: 'product/:id', component: ViewProductComponent },
+  { path: 'admin/invite/:hash', component: AdminInviteComponent },
 ];
 
 @NgModule({

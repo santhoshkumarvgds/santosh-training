@@ -153,9 +153,9 @@ export class ViewProductComponent implements OnInit {
         }
       },
     });
-
     handler.open({
       name: 'shoppy',
+      // image : "http://localhost:4000/"+this.image,
       description: this.name,
       amount: amount,
       currency: 'INR',

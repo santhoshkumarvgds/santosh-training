@@ -39,172 +39,168 @@ const { product, order } = require("../models/database");
 // });
 
 router.post("/allproduct", async (req, res, next) => {
-    const attributes = [
-        "id",
-        "email",
-        "product_name",
-        "product_image",
-        "product_prize",
-        "product_category",
-        "product_companyname",
-        "product_warranty",
-        "product_assured",
-        "product_description"
-      ];
-      var dbProductList;
-      if(req.session.role== "Seller"){
-        dbProductList = await product.findAll({
-          where: { email: req.session.email },
-          attributes: attributes
-        });
-      }
-      else{
-          dbProductList = await product.findAll({
-          attributes: attributes
-        });
-      }
-    res.json({
-      productlist: dbProductList,
+  const attributes = [
+    "id",
+    "email",
+    "product_name",
+    "product_image",
+    "product_prize",
+    "product_category",
+    "product_companyname",
+    "product_warranty",
+    "product_assured",
+    "product_description",
+  ];
+  var dbProductList;
+  if (req.session.role == "Seller") {
+    dbProductList = await product.findAll({
+      where: { email: req.session.email },
+      attributes: attributes,
     });
+  } else {
+    dbProductList = await product.findAll({
+      offset : req.query.offset,
+      limit : req.query.limit,
+      attributes: attributes,
+    });
+  }
+  res.json({
+    productlist: dbProductList,
+  });
 });
 
-// router.post("/searchproduct", async (req, res, next) => {
-//   try {
-//     const dbProductList = await product.findAll({
-//       where: { product_name: req.body.search },
-//       attributes: [
-//         "id",
-//         "email",
-//         "product_name",
-//         "product_image",
-//         "product_prize",
-//         "product_category",
-//         "product_companyname",
-//         "product_warranty",
-//         "product_assured",
-//         "product_description",
-//       ],
-//     });
-//     res.json({
-//       productlist: dbProductList,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.json({
-//       status: "failed",
-//     });
-//   }
-// });
+router.post("/searchproduct", async (req, res, next) => {
+  const dbProductList = await product.findAll({
+    where: { product_name: req.body.search },
+    attributes: [
+      "id",
+      "email",
+      "product_name",
+      "product_image",
+      "product_prize",
+      "product_category",
+      "product_companyname",
+      "product_warranty",
+      "product_assured",
+      "product_description",
+    ],
+  });
+  res.json({
+    productlist: dbProductList,
+  });
+});
 router.post(
   "/productimage",
-  upload.single("productimage"),roleCheck("Seller"),
-  async (req, res, next) => {
-        const temp = "temp";
-        var ProductInsert = await product.create({
-          email: req.session.email,
-          product_name: temp,
-          product_image: req.file.filename,
-          product_prize: 1,
-          product_category: temp,
-          product_companyname: temp,
-          product_warranty: temp,
-          product_description: temp,
-        });
-        var db = await product.findOne({
-          where: { product_image: req.file.filename },
-          attributes: ["id"],
-        });
-        req.session.idval = db.id;
-        // console.log(a);
-        res.json({
-          status: "success",
-        });
-
+  upload.single("productimage"),
+  roleCheck("Seller"),
+  async (req, res) => {
+    const temp = "temp";
+    var ProductInsert = await product.create({
+      email: req.session.email,
+      product_name: temp,
+      product_image: req.file.filename,
+      product_prize: 1,
+      product_category: temp,
+      product_companyname: temp,
+      product_warranty: temp,
+      product_description: temp,
+    });
+    var db = await product.findOne({
+      where: { product_image: req.file.filename },
+      attributes: ["id"],
+    });
+    req.session.idval = db.id;
+    // console.log(a);
+    res.json({
+      status: "success",
+    });
   }
 );
 
 router.post("/addproduct", roleCheck("Seller"), async (req, res, next) => {
-      const a = product.update(
-        {
-          product_name: req.body.productname,
-          product_prize: req.body.productprize,
-          product_category: req.body.productcategory,
-          product_companyname: req.body.productcompanyname,
-          product_warranty: req.body.productwarranty,
-          product_description: req.body.productdescription,
-        },
-        { where: { id: req.session.idval } }
-      );
-      res.json({
-        status: "success",
-      });
-
+  const a = product.update(
+    {
+      product_name: req.body.productname,
+      product_prize: req.body.productprize,
+      product_category: req.body.productcategory,
+      product_companyname: req.body.productcompanyname,
+      product_warranty: req.body.productwarranty,
+      product_description: req.body.productdescription,
+    },
+    { where: { id: req.session.idval } }
+  );
+  res.json({
+    status: "success",
+  });
 });
 router.post("/deleteproduct", roleCheck("Admin"), async (req, res, next) => {
-      await product.destroy({
-        where: { id: req.body.id },
-      });
-      res.json({
-        status: "success",
-      });
-
+  await product.destroy({
+    where: { id: req.body.id },
+  });
+  res.json({
+    status: "success",
+  });
 });
 
 router.post("/assured", roleCheck("Admin"), async (req, res, next) => {
-      product.update(
-        { product_assured: "Assured" },
-        { where: { id: req.body.id } }
-      );
-      res.json({
-        status: "assured",
-      });
+  product.update(
+    { product_assured: "Assured" },
+    { where: { id: req.body.id } }
+  );
+  res.json({
+    status: "assured",
+  });
 });
 
-router.post("/placeorder",roleCheck("User"), async (req, res, next) => {
-      const dbProductList = await product.findAll({
-        where: { id: req.session.itemid },
-        attributes: ["product_name", "product_prize"],
-      });
-      var dbInsert = await order.create({
-        email: req.session.email,
-        product_name: dbProductList[0].product_name,
-        product_prize: dbProductList[0].product_prize,
-      });
-      res.json({
-        status: "success",
-      });
+router.post("/placeorder", roleCheck("User"), async (req, res, next) => {
+  const dbProductList = await product.findAll({
+    where: { id: req.session.itemid },
+    attributes: ["product_name", "product_prize"],
+  });
+  var dbInsert = await order.create({
+    email: req.session.email,
+    product_name: dbProductList[0].product_name,
+    product_prize: dbProductList[0].product_prize,
+  });
+  res.json({
+    status: "success",
+  });
 });
 
-router.post("/orders", roleCheck("User"),async (req, res, next) => {
-      const dbProductList = await order.findAll({
-        where: { email: req.session.email },
-        attributes: ["id", "product_name", "product_prize"],
-      });
-      res.json({
-        productlist: dbProductList,
-      });
+router.post("/orders", roleCheck("User"), async (req, res, next) => {
+  const dbProductList = await order.findAll({
+    where: { email: req.session.email },
+    attributes: ["id", "product_name", "product_prize"],
+  });
+  res.json({
+    productlist: dbProductList,
+  });
 });
 
 router.post("/getproduct", async (req, res) => {
   req.session.itemid = req.body.id;
-    const dbProductList = await product.findOne({
-      where: { id: req.body.id },
-      attributes: [
-        "email",
-        "product_name",
-        "product_image",
-        "product_prize",
-        "product_category",
-        "product_companyname",
-        "product_warranty",
-        "product_assured",
-        "product_description",
-      ],
-    });
-    res.json({
-      productlist: dbProductList,
-      role: req.session.role,
-    });
+  const dbProductList = await product.findOne({
+    where: { id: req.body.id },
+    attributes: [
+      "email",
+      "product_name",
+      "product_image",
+      "product_prize",
+      "product_category",
+      "product_companyname",
+      "product_warranty",
+      "product_assured",
+      "product_description",
+    ],
+  });
+  res.json({
+    productlist: dbProductList,
+    role: req.session.role,
+  });
+});
+
+router.get("/demo", (req, res) => {
+  console.log(req.query.limit + " " + req.query.work);
 });
 
 module.exports = {

@@ -1,0 +1,37 @@
+
+    <div class="section">
+      <div class="form">
+        <form (submit)="submit($event)">
+          <h1>Admin</h1>
+
+          <input
+            class="box"
+            type="text"
+            name="name"
+            placeholder="Name"
+            [(ngModel)]="name"
+            required
+          />
+
+          <br />
+
+          <input
+            class="box"
+            type="password"
+            name="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+          />
+
+          <br />
+          <br />
+          <input
+            type="submit"
+            id="submitDetails"
+            name="submitDetails"
+            value="Submit"
+          />
+          <br />
+        </form>
+      </div>
+    </div>
