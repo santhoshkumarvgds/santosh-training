@@ -45,7 +45,8 @@ export class ProductComponent implements OnInit {
         }
       );
       const data: any = await response.json();
-      if (!data.productlist.length) this.end = true;
+      if (!data.productlist.length || data.productlist.length < 10)
+        this.end = true;
       this.arr = [];
       for (var i = 0; i < data.productlist.length; i++) {
         this.arr.push(data.productlist[i]);
@@ -68,7 +69,7 @@ export class ProductComponent implements OnInit {
     );
     const data = await response.json();
     console.log(data.productlist);
-    if(!data.productlist.length) this.end = true;
+    if (!data.productlist.length || data.productlist.length<10) this.end = true;
     for (var i = 0; i < data.productlist.length; i++) {
       this.arr.push(data.productlist[i]);
     }

@@ -103,6 +103,7 @@ router.post(
       product_category: temp,
       product_companyname: temp,
       product_warranty: temp,
+      product_assured:"No assured",
       product_description: temp,
     });
     var db = await product.findOne({

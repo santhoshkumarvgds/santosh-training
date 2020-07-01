@@ -12,6 +12,25 @@ export class PendingUserComponent implements OnInit {
   values: any = [];
   constructor() {}
 
+  async acceptreject(email, status) {
+     const response : any = await fetch('http://localhost:4000/user/acceptreject', {
+       method: 'post',
+       credentials: 'include',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({
+         email: email,
+         status: status,
+       }),
+     });
+     const data :any = await response.json();
+     if (data.status) {
+       alert(data.status);
+       this.values(this.values.filter((item) => item != email));
+     } else {
+       alert('Try again');
+     }
+  }
+
   async ngOnInit() {
     const response: any = await fetch(
       'http://localhost:4000/user/pendingapprovel',

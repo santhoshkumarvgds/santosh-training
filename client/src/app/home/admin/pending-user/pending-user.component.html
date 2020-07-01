@@ -13,12 +13,12 @@
         <tr key="{item}">
           <td>{{item}}</td>
           <td>
-            <a>
+            <a (click)="acceptreject(item,'Accept')">
               Accept
             </a>
           </td>
           <td>
-            <a>
+            <a (click)="acceptreject(item,'Reject')">
               Reject
             </a>
           </td>

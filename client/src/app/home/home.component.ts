@@ -27,10 +27,13 @@ export class HomeComponent implements OnInit {
       },
     });
     const body: any = await response.json();
-      this.role = body.role;
-    if ((body.role)) {
-        this.loginStatus = true;
-        this.render = 'product';
+    this.role = body.role;
+    console.log(body.role);
+    if (body.role.toLocaleLowerCase() == this.roleCheck) {
+      this.loginStatus = true;
+      this.render = 'product';
+    } else {
+      this.router.navigate([body.role.toLocaleLowerCase()]);
     }
   }
 

@@ -36,7 +36,7 @@ router.post("/signup", async (req, res, next) => {
         var pendingRequest = "true";
         var status = "pending";
         if (isRole == "User" || isRole == "Admin") {
-          status = "approved";
+          status = "accept";
           pendingRequest = "false";
         }
         try {

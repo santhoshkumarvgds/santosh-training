@@ -32,17 +32,12 @@
       <h3>{{ item.product_name }}</h3>
       <p>Rs.{{ item.product_prize }}</p>
       <p>{{ item.product_companyname }}</p>
-      <div *ngIf="item.product_assured; else noassured">
-        <p class="product-assured">{{ item.product_assured }}</p>
-      </div>
-      <ng-template #noassured>
-        <p class="product-assured">...</p>
-      </ng-template>
+       <p class="product-assured">{{ item.product_assured }}</p>
       <a (click)="clickProduct(item.id)">view more </a>
     </div>
   </div>
   </div>
   <div *ngIf="end" style="text-align: center;">
-    <p>-----End-----</p>
+    <p>----- No more products -----</p>
   </div>
 </div>
