@@ -52,7 +52,6 @@ router.post("/addadmin",roleCheck("Admin"), async (req, res, next) => {
                   subject: 'Inviting Admin',
                   text: "http://localhost:4200/admin/invite/"+mystr
                 };
-                console.log(mailOptions.text);
                 transporter.sendMail(mailOptions, function(error, info){
                   if (error) {
                     res.json({

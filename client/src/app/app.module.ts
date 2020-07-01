@@ -20,7 +20,6 @@ import { AddAdminComponent } from './home/admin/add-admin/add-admin.component';
 import { PendingUserComponent } from './home/admin/pending-user/pending-user.component';
 import { OrdersComponent } from './home/user/orders/orders.component';
 import { AddproductComponent } from './home/seller/addproduct/addproduct.component';
-import { SellerProductComponent } from './home/seller/seller-product/seller-product.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
 
@@ -38,7 +37,6 @@ import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.com
     PendingUserComponent,
     OrdersComponent,
     AddproductComponent,
-    SellerProductComponent,
     LogoutComponent,
     AdminInviteComponent,
   ],
@@ -48,7 +46,7 @@ import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.com
     FormsModule,
     InfiniteScrollModule,
     NgxSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
