@@ -15,7 +15,7 @@ const upload = multer({ storage: storage });
 const validuser = require("../middleware/checkvalid");
 const roleCheck = require("../middleware/roleCheck");
 
-const { product, order } = require("../models/database");
+const { product, order,productReview } = require("../models/database");
 
 // router.post("/sellerproduct", roleCheck("Seller"), async (req, res, next) => {
 //       const dbProductList = await product.findAll({
@@ -194,14 +194,29 @@ router.post("/getproduct", async (req, res) => {
       "product_description",
     ],
   });
+  const dbProductReviewList = await productReview.findAll({
+    where: { product_id: req.body.id },
+    attributes: ["name", "user_comment", "user_rating"],
+  });
   res.json({
     productlist: dbProductList,
+    name : req.session.name,
     role: req.session.role,
+    productReviewList: dbProductReviewList,
   });
 });
 
-router.get("/demo", (req, res) => {
-  console.log(req.query.limit + " " + req.query.work);
+router.post("/productreview", roleCheck("User"), async(req, res) => {
+  var ProductReviewInsert = await productReview.create({
+    product_id : req.body.id,
+    email: req.session.email,
+    name: req.session.name,
+    user_comment: req.body.comment,
+    user_rating : req.body.rating
+  });
+  res.json({
+    status: "success"
+  });
 });
 
 module.exports = {

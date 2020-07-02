@@ -24,8 +24,8 @@ export class PendingUserComponent implements OnInit {
      });
      const data :any = await response.json();
      if (data.status) {
-       alert(data.status);
-       this.values(this.values.filter((item) => item != email));
+       alert(email+" was "+data.status);
+       this.values=this.values.filter((item) => item != email);
      } else {
        alert('Try again');
      }

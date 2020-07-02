@@ -40,14 +40,13 @@ create table orders(
 );
 
 create table product_review(
-    id int not null,
+    product_id int not null,
     email varchar(30) not null,
     name varchar(30) not null,
     user_comment varchar(1000) not null,
     user_rating int not null,
-    foreign key (id) references product(id)
+    foreign key (product_id) references product(id)
 );
-
 
 insert into usertable(name,email,password) values('AdminRole','adminrole@admin.com','$2b$10$GQBuZ.K/V2Usejl0a.orSuf4SeUt4QnEgf71810LKMV3eMoKJzqlO'); /*default admin password 123 */
 

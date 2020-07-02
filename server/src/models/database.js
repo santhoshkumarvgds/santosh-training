@@ -93,15 +93,31 @@ const order = sequelize.define(
   }
 );
 
+const productReview = sequelize.define(
+  "productreview",
+  {
+    product_id: Sequelize.INTEGER,
+    email: Sequelize.STRING,
+    name: Sequelize.STRING,
+    user_comment: Sequelize.STRING,
+    user_rating: Sequelize.INTEGER,
+  },
+  {
+    tableName: "product_review",
+    timestamps: false,
+  }
+);
+
 users.removeAttribute("id");
 userrole.removeAttribute("id");
 userPermission.removeAttribute("id");
-// order.removeAttribute("id");
+productReview.removeAttribute("id");
 
 //exports
 module.exports = {
   users: users,
   userrole: userrole,
   product: product,
-  order:order,
+  order: order,
+  productReview:productReview,
 };
