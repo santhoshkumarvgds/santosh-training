@@ -15,7 +15,7 @@ const upload = multer({ storage: storage });
 const validuser = require("../middleware/checkvalid");
 const roleCheck = require("../middleware/roleCheck");
 
-const { product, order,productReview } = require("../models/database");
+const { product, order, productReview } = require("../models/database");
 
 // router.post("/sellerproduct", roleCheck("Seller"), async (req, res, next) => {
 //       const dbProductList = await product.findAll({
@@ -56,11 +56,13 @@ router.post("/allproduct", async (req, res, next) => {
     dbProductList = await product.findAll({
       where: { email: req.session.email },
       attributes: attributes,
+      offset: req.query.offset,
+      limit: req.query.limit
     });
   } else {
     dbProductList = await product.findAll({
-      offset : req.query.offset,
-      limit : req.query.limit,
+      offset: req.query.offset,
+      limit: req.query.limit,
       attributes: attributes,
     });
   }
@@ -89,51 +91,28 @@ router.post("/searchproduct", async (req, res, next) => {
     productlist: dbProductList,
   });
 });
+
 router.post(
-  "/productimage",
-  upload.single("productimage"),
+  "/addproduct",
   roleCheck("Seller"),
-  async (req, res) => {
-    const temp = "temp";
+  upload.single("productimage"),
+  async (req, res, next) => {
     var ProductInsert = await product.create({
       email: req.session.email,
-      product_name: temp,
+      product_name: req.headers.productname,
       product_image: req.file.filename,
-      product_prize: 1,
-      product_category: temp,
-      product_companyname: temp,
-      product_warranty: temp,
-      product_assured:"No assured",
-      product_description: temp,
+      product_prize: req.headers.productprize,
+      product_category: req.headers.productcategory,
+      product_companyname: req.headers.productcompanyname,
+      product_warranty: req.headers.productwarranty,
+      product_assured: "No assured",
+      product_description: req.headers.productdescription,
     });
-    var db = await product.findOne({
-      where: { product_image: req.file.filename },
-      attributes: ["id"],
-    });
-    req.session.idval = db.id;
-    // console.log(a);
     res.json({
       status: "success",
     });
   }
 );
-
-router.post("/addproduct", roleCheck("Seller"), async (req, res, next) => {
-  const a = product.update(
-    {
-      product_name: req.body.productname,
-      product_prize: req.body.productprize,
-      product_category: req.body.productcategory,
-      product_companyname: req.body.productcompanyname,
-      product_warranty: req.body.productwarranty,
-      product_description: req.body.productdescription,
-    },
-    { where: { id: req.session.idval } }
-  );
-  res.json({
-    status: "success",
-  });
-});
 router.post("/deleteproduct", roleCheck("Admin"), async (req, res, next) => {
   await product.destroy({
     where: { id: req.body.id },
@@ -200,22 +179,22 @@ router.post("/getproduct", async (req, res) => {
   });
   res.json({
     productlist: dbProductList,
-    name : req.session.name,
+    name: req.session.name,
     role: req.session.role,
     productReviewList: dbProductReviewList,
   });
 });
 
-router.post("/productreview", roleCheck("User"), async(req, res) => {
+router.post("/productreview", roleCheck("User"), async (req, res) => {
   var ProductReviewInsert = await productReview.create({
-    product_id : req.body.id,
+    product_id: req.body.id,
     email: req.session.email,
     name: req.session.name,
     user_comment: req.body.comment,
-    user_rating : req.body.rating
+    user_rating: req.body.rating,
   });
   res.json({
-    status: "success"
+    status: "success",
   });
 });
 

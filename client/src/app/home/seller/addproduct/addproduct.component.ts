@@ -5,57 +5,45 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './addproduct.component.html',
 })
 export class AddproductComponent implements OnInit {
-  productName: string = '';
+  productName: string;
   productImage;
-  productPrize: string = '';
-  productCategory: string = '';
-  productCompanyName: string = '';
-  productWarranty: string = '';
-  productDescription: string = '';
+  productPrize: string;
+  productCategory: string;
+  productCompanyName: string;
+  productWarranty: string;
+  productDescription: string;
 
   constructor() {}
 
   async handleChangefile(e) {
+    this.productImage = e.target.files[0];
+  }
+
+  async add(e: Event) {
+    e.preventDefault();
     var myHeaders : Headers = new Headers();
+    myHeaders.append('productname', this.productName);
+    myHeaders.append('productimage', this.productImage);
+    myHeaders.append('productprize', this.productPrize);
+    myHeaders.append('productcategory', this.productCategory);
+    myHeaders.append('productcompanyname', this.productCompanyName);
+    myHeaders.append('productwarranty', this.productWarranty);
+    myHeaders.append('productdescription', this.productDescription);
 
     var formdata: FormData = new FormData();
-    formdata.append('productimage', e.target.files[0]);
+    formdata.append('productimage', this.productImage);
 
-    var requestOptions: any = {
+    const response: any = await fetch(
+      'http://localhost:4000/user/addproduct',
+      {
       method: 'POST',
       credentials: 'include',
       headers: myHeaders,
       body: formdata,
       redirect: 'follow',
-    };
-
-    fetch(
-      'http://localhost:4000/user/productimage',
-      requestOptions
-    ).then((response) => response.text());
-  }
-
-  async add(e: Event) {
-    e.preventDefault();
-
-    const response: any = await fetch('http://localhost:4000/user/addproduct', {
-      method: 'post',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        productname: this.productName,
-        productimage: 'file',
-        productprize: this.productPrize,
-        productcategory: this.productCategory,
-        productcompanyname: this.productCompanyName,
-        productwarranty: this.productWarranty,
-        productdescription: this.productDescription,
-      }),
     });
-
     const body: any = await response.json();
+    console.log(body);
     if (body.status == 'success') {
       alert('product added');
       window.location.reload();

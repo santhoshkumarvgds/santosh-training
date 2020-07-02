@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['../../assets/css/addproduct.css', '../../assets/css/home.css'],
 })
 export class ProductComponent implements OnInit {
-  searchValue: string = '';
+  searchValue: string;
   lists: any = [];
   scroll: number = 0;
   limit: number = 10;
