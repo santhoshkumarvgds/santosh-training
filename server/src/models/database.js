@@ -15,9 +15,19 @@ const sequelize = new Sequelize(
 const users = sequelize.define(
   "user",
   {
-    name: Sequelize.STRING,
-    email: Sequelize.STRING,
-    password: Sequelize.STRING,
+    name: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    email: {
+      allowNull: false,
+      primaryKey: true,
+      type: Sequelize.STRING,
+    },
+    password: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
   },
   {
     tableName: "usertable",
@@ -28,10 +38,27 @@ const users = sequelize.define(
 const userrole = sequelize.define(
   "userrole",
   {
-    email: Sequelize.STRING,
-    role: Sequelize.STRING,
-    pendingrequest: Sequelize.STRING,
-    status: Sequelize.STRING,
+    email: {
+      allowNull: false,
+      primaryKey: true,
+      type: Sequelize.STRING,
+      references: {
+        model: "usertable",
+        key: "email",
+      },
+    },
+    role: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    pendingrequest: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    status: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
   },
   {
     tableName: "userrole",
@@ -42,8 +69,14 @@ const userrole = sequelize.define(
 const userPermission = sequelize.define(
   "permission",
   {
-    permission: Sequelize.STRING,
-    role: Sequelize.STRING,
+    permission: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    role: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
   },
   {
     tableName: "permission",
@@ -55,19 +88,51 @@ const product = sequelize.define(
   "userproduct",
   {
     id: {
-      type: Sequelize.STRING,
+      allowNull: false,
       autoIncrement: true,
-      primaryKey:true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
     },
-    email: Sequelize.STRING,
-    product_name: Sequelize.STRING,
-    product_image: Sequelize.STRING,
-    product_prize: Sequelize.INTEGER,
-    product_category:Sequelize.STRING,
-    product_companyname:Sequelize.STRING,
-    product_warranty:Sequelize.STRING,
-    product_assured:Sequelize.STRING,
-    product_description: Sequelize.STRING,
+    email: {
+      allowNull: false,
+      type: Sequelize.STRING,
+      references: {
+        model: "usertable",
+        key: "email",
+      },
+    },
+    product_name: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_image: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_prize: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+    },
+    product_category: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_companyname: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_warranty: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_assured: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_description: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
   },
   {
     tableName: "product",
@@ -79,13 +144,27 @@ const order = sequelize.define(
   "userorder",
   {
     id: {
-      type: Sequelize.STRING,
+      allowNull: false,
       autoIncrement: true,
-      primaryKey:true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
     },
-    email: Sequelize.STRING,
-    product_name: Sequelize.STRING,
-    product_prize: Sequelize.INTEGER,
+    email: {
+      allowNull: false,
+      type: Sequelize.STRING,
+      references: {
+        model: "usertable",
+        key: "email",
+      },
+    },
+    product_name: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    product_prize: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+    },
   },
   {
     tableName: "orders",
@@ -96,11 +175,30 @@ const order = sequelize.define(
 const productReview = sequelize.define(
   "productreview",
   {
-    product_id: Sequelize.INTEGER,
-    email: Sequelize.STRING,
-    name: Sequelize.STRING,
-    user_comment: Sequelize.STRING,
-    user_rating: Sequelize.INTEGER,
+    product_id: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "product",
+        key: "id",
+      },
+    },
+    email: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    name: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    user_comment: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    user_rating: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+    },
   },
   {
     tableName: "product_review",
@@ -113,11 +211,15 @@ userrole.removeAttribute("id");
 userPermission.removeAttribute("id");
 productReview.removeAttribute("id");
 
+sequelize.sync({ force: false }).then(() => {
+  console.log("Tables created");
+});
+
 //exports
 module.exports = {
   users: users,
   userrole: userrole,
   product: product,
   order: order,
-  productReview:productReview,
+  productReview: productReview,
 };
