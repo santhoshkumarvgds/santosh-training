@@ -6,6 +6,8 @@ import { PendingApprovelComponent } from './home/pending-approvel/pending-approv
 import { ViewProductComponent } from './view-product/view-product.component';
 import { HomeComponent } from './home/home.component';
 import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
 
 
 const routes: Routes = [
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'pendingapprovel', component: PendingApprovelComponent },
   { path: 'product/:id', component: ViewProductComponent },
   { path: 'admin/invite/:hash', component: AdminInviteComponent },
+  { path: 'forgotpassword', component: ForgotPasswordComponent },
+  { path: 'password/change/:hash', component: UpdatePasswordComponent },
 ];
 
 @NgModule({

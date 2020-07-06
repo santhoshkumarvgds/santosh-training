@@ -22,6 +22,8 @@ import { OrdersComponent } from './home/user/orders/orders.component';
 import { AddproductComponent } from './home/seller/addproduct/addproduct.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.com
     AddproductComponent,
     LogoutComponent,
     AdminInviteComponent,
+    ForgotPasswordComponent,
+    UpdatePasswordComponent,
   ],
   imports: [
     BrowserModule,

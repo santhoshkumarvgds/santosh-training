@@ -28,6 +28,10 @@ const users = sequelize.define(
       allowNull: false,
       type: Sequelize.STRING,
     },
+    forgot_password: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
   },
   {
     tableName: "usertable",
@@ -211,9 +215,9 @@ userrole.removeAttribute("id");
 userPermission.removeAttribute("id");
 productReview.removeAttribute("id");
 
-sequelize.sync({ force: false }).then(() => {
-  console.log("Tables created");
-});
+// sequelize.sync({ force: false }).then(() => {
+//   console.log("Tables created");
+// });
 
 //exports
 module.exports = {

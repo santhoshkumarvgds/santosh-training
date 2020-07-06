@@ -16,6 +16,10 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING,
         },
+        forgot_password: {
+          allowNull: true,
+          type: Sequelize.STRING,
+        },
       })
       .then((x) =>
         queryInterface.sequelize.query(`

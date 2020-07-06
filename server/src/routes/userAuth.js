@@ -4,7 +4,9 @@ const session = require("express-session");
 const router = express.Router();
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
+const unique = require("unique-string");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 //local module
 const { users, userrole } = require("../models/database.js");
 const validuser = require("../middleware/checkvalid");
@@ -94,7 +96,8 @@ router.post("/login", async (req, res, next) => {
         if (result) {
           if (
             dbUserRole.pendingrequest == "false" &&
-            dbUserRole.status != "reject" && dbUserRole.status !="pending"
+            dbUserRole.status != "reject" &&
+            dbUserRole.status != "pending"
           ) {
             // var jwtEmail = dbUser.email;
             // var jwtName = dbUser.name;
@@ -137,7 +140,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.post("/logout",validuser, (req, res, next) => {
+router.post("/logout", validuser, (req, res, next) => {
   req.session.destroy(function () {
     res.clearCookie("connect.sid");
 
@@ -145,6 +148,92 @@ router.post("/logout",validuser, (req, res, next) => {
       status: "success",
     });
   });
+});
+
+router.post("/forgotpassword", async (req, res) => {
+  try {
+    var dbEmail = await users.findOne({
+      where: { email: req.body.email },
+      attributes: ["email"],
+    });
+    if (dbEmail.email) {
+      const uniqueString = unique();
+      await users.update(
+        {
+          forgot_password: uniqueString,
+        },
+        {
+          where: { email: req.body.email },
+        }
+      );
+      // console.log(uniqueString);
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_ID,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+      var mailOptions = {
+        from: process.env.EMAIL_ID,
+        to: req.body.email,
+        subject: "",
+        text: "http://localhost:4200/password/change/" + uniqueString,
+      };
+      console.log(mailOptions.text);
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          res.json({
+            message: "Try again",
+          });
+        } else {
+          res.json({
+            message: "link send your mail",
+          });
+        }
+      });
+    }
+  } catch (error) {
+    // console.log(error);
+    res.json({
+      message: "Mail not exits",
+    });
+  }
+});
+
+router.post("/updatepassword", async (req, res) => {
+  try {
+    var dbEmail = await users.findOne({
+    where: { forgot_password: req.body.hashValue },
+    attributes: ["forgot_password"],
+  });
+  if (dbEmail.forgot_password) {
+    bcrypt.hash(req.body.password, 10, async (err, hash) => {
+      if (err) {
+        return res.json({
+          message: "error",
+        });
+      } else {
+        const dbPasswordUpdate = await users.update(
+          {
+            password: hash,
+            forgot_password: "",
+          },
+          {
+            where: { forgot_password: req.body.hashValue },
+          }
+        );
+        res.json({
+          message: "password reseted",
+        });
+      }
+    });
+  }
+  } catch (err) {
+      res.json({
+        message: "failed",
+      });
+  }
 });
 
 module.exports = {

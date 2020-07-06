@@ -13,13 +13,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  usertable.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'usertable',
-  });
+  usertable.init(
+    {
+      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      forgot_password: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "usertable",
+    }
+  );
   return usertable;
 };
