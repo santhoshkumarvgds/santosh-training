@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
+import { PushNotificationComponent } from './push-notification/push-notification.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'admin/invite/:hash', component: AdminInviteComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
   { path: 'password/change/:hash', component: UpdatePasswordComponent },
+  { path: 'push', component: PushNotificationComponent },
 ];
 
 @NgModule({
@@ -31,6 +33,5 @@ const routes: Routes = [
 export class AppRoutingModule {
 
   ngOnInit(){
-    alert("work");
   }
 }

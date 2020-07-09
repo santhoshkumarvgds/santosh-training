@@ -24,6 +24,11 @@ import { LogoutComponent } from './auth/logout/logout.component';
 import { AdminInviteComponent } from './home/admin/admin-invite/admin-invite.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
+import { PushNotificationComponent } from './push-notification/push-notification.component';
+import { ServiceWorkerModule } from '@angular/router/service-worker/';
+import { environment } from '../environments/environment';
+import { PushNotificationServiceService } from './push-notification-service.service';
+import { SwPush, SwUpdate } from '@angular/router/service-worker';
 
 @NgModule({
   declarations: [
@@ -43,6 +48,7 @@ import { UpdatePasswordComponent } from './auth/update-password/update-password.
     AdminInviteComponent,
     ForgotPasswordComponent,
     UpdatePasswordComponent,
+    PushNotificationComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,8 +57,11 @@ import { UpdatePasswordComponent } from './auth/update-password/update-password.
     InfiniteScrollModule,
     NgxSpinnerModule,
     HttpClientModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production,
+    }),
   ],
-  providers: [],
+  providers: [PushNotificationServiceService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

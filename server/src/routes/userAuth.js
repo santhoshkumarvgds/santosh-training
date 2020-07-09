@@ -203,11 +203,11 @@ router.post("/forgotpassword", async (req, res) => {
 
 router.post("/updatepassword", async (req, res) => {
   try {
-    var dbEmail = await users.findOne({
+    var db = await users.findOne({
     where: { forgot_password: req.body.hashValue },
     attributes: ["forgot_password"],
   });
-  if (dbEmail.forgot_password) {
+  if (db.forgot_password) {
     bcrypt.hash(req.body.password, 10, async (err, hash) => {
       if (err) {
         return res.json({
