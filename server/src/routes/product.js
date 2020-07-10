@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const nodemailer = require("nodemailer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads/");
@@ -15,7 +16,12 @@ const upload = multer({ storage: storage });
 const validuser = require("../middleware/checkvalid");
 const roleCheck = require("../middleware/roleCheck");
 
-const { product, order, productReview } = require("../models/database");
+const {
+  userrole,
+  product,
+  order,
+  productReview,
+} = require("../models/database");
 
 // router.post("/sellerproduct", roleCheck("Seller"), async (req, res, next) => {
 //       const dbProductList = await product.findAll({
@@ -57,7 +63,7 @@ router.post("/allproduct", async (req, res, next) => {
       where: { email: req.session.email },
       attributes: attributes,
       offset: req.query.offset,
-      limit: req.query.limit
+      limit: req.query.limit,
     });
   } else {
     dbProductList = await product.findAll({
@@ -108,6 +114,52 @@ router.post(
       product_assured: "No assured",
       product_description: req.headers.productdescription,
     });
+    const productId = await product.findOne({
+      where: { product_image: req.file.filename },
+      attributes: ["id"],
+    });
+    const dbAdminRoleList = await userrole.findAll({
+      where: { role: "Admin" },
+      attributes: ["email"],
+    });
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_ID,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+    var mailOptions = {
+      from: process.env.EMAIL_ID,
+      subject: "Seller added product",
+      text:
+        "The seller info : \nEmail : " +
+        req.session.email +
+        "\nName : " +
+        req.session.name +
+        "\nClick to view product : http://localhost:4200/product/" +
+        productId,
+    };
+    try{
+    for (let i = 0; i < dbAdminRoleList.length; i++) {
+      // console.log(dbAdminRoleList[i].email);
+      mailOptions.to = dbAdminRoleList[i].email;
+      // console.log(mailOptions.text);
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          res.json({
+            message: "Try again",
+          });
+        } else {
+          console.log("success");
+        }
+      });
+    }
+    } catch (err) {
+      res.json({
+        status :"Check your connection"
+      })
+  }
     res.json({
       status: "success",
     });

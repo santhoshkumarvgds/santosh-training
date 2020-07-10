@@ -57,8 +57,8 @@ import { SwPush, SwUpdate } from '@angular/router/service-worker';
     InfiniteScrollModule,
     NgxSpinnerModule,
     HttpClientModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: environment.production,
+    ServiceWorkerModule.register('./ngsw-worker.js', {
+      enabled: false,
     }),
   ],
   providers: [PushNotificationServiceService],

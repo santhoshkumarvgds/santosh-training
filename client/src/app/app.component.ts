@@ -8,13 +8,13 @@ import { SwPush } from '@angular/service-worker';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  // constructor(private router: Router) {}
-  constructor(private swPush: SwPush, private router: Router) {
-    this.swPush.notificationClicks.subscribe((event) => {
-      console.log('Received notification: ', event);
-      const url = event.notification.data.url;
-      window.open(url, '_blank');
-    });
-  }
+  constructor(private router: Router) {}
+  // constructor(private swPush: SwPush, private router: Router) {
+  //   this.swPush.notificationClicks.subscribe((event) => {
+  //     console.log('Received notification: ', event);
+  //     const url = event.notification.data.url;
+  //     window.open(url, '_blank');
+  //   });
+  // }
   async ngOnInit() {}
 }

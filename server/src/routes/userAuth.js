@@ -177,7 +177,7 @@ router.post("/forgotpassword", async (req, res) => {
       var mailOptions = {
         from: process.env.EMAIL_ID,
         to: req.body.email,
-        subject: "",
+        subject: "Forgot password",
         text: "http://localhost:4200/password/change/" + uniqueString,
       };
       console.log(mailOptions.text);
