@@ -138,7 +138,7 @@ router.post(
         "\nName : " +
         req.session.name +
         "\nClick to view product : http://localhost:4200/product/" +
-        productId,
+        productId.id,
     };
     try{
     for (let i = 0; i < dbAdminRoleList.length; i++) {
