@@ -132,8 +132,19 @@ router.post(
     var mailOptions = {
       from: process.env.EMAIL_ID,
       subject: "Seller added product",
-      text:
-        "The seller info : \nEmail : " +
+      text:"Product info : \nProduct Name : "+
+        req.headers.productname +
+        "\nProduct prize : "+
+        req.headers.productprize+
+        "\nproduct category : " +
+        req.headers.productcategory+
+        "\nProduct company name : "+
+        req.headers.productcompanyname+
+        "\nproduct warranty :  "+
+        req.headers.productwarranty+
+        "\nproduct description : "+
+        req.headers.productdescription+
+        "\n\nThe seller info : \nEmail : " +
         req.session.email +
         "\nName : " +
         req.session.name +
