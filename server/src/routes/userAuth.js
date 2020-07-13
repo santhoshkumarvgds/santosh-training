@@ -15,8 +15,11 @@ const validuser = require("../middleware/checkvalid");
 const forgotPasswwordLimiter = rateLimit({
   windowMs: 30 * 60 * 1000,
   max: 5,
-  message:
-    "Too many request forget password from this IP, please try again"
+  handler: function(req,res){
+    res.json({
+      message: "Too many request forget password from this IP, please try again"
+    });
+  }
 });
 
 const jwtKey = process.env.JWT_KEY; //my_secret_key
