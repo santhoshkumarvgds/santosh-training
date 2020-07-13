@@ -215,9 +215,9 @@ userrole.removeAttribute("id");
 userPermission.removeAttribute("id");
 productReview.removeAttribute("id");
 
-// sequelize.sync({ force: false }).then(() => {
-//   console.log("Tables created");
-// });
+sequelize.sync({ force: false }).then(() => {
+  console.log("Tables created");
+});
 
 //exports
 module.exports = {

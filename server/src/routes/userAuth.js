@@ -7,9 +7,17 @@ const bcrypt = require("bcrypt");
 const unique = require("unique-string");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const rateLimit = require("express-rate-limit");
 //local module
 const { users, userrole } = require("../models/database.js");
 const validuser = require("../middleware/checkvalid");
+
+const forgotPasswwordLimiter = rateLimit({
+  windowMs: 30 * 60 * 1000,
+  max: 5,
+  message:
+    "Too many request forget password from this IP, please try again"
+});
 
 const jwtKey = process.env.JWT_KEY; //my_secret_key
 
@@ -150,7 +158,7 @@ router.post("/logout", validuser, (req, res, next) => {
   });
 });
 
-router.post("/forgotpassword", async (req, res) => {
+router.post("/forgotpassword",forgotPasswwordLimiter, async (req, res) => {
   try {
     var dbEmail = await users.findOne({
       where: { email: req.body.email },

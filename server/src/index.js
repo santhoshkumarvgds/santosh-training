@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 4000;
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
+const rateLimit = require("express-rate-limit");
 app.use(express.json());
 app.use(express.static("uploads"));
 app.use(cookieParser());
@@ -30,7 +31,12 @@ app.use(function (err,req,res,next) {
   res.json({
     status: "failed",
   });
-})
+});
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
 
 //local module
 const { userAuth } = require("./routes/userAuth");
