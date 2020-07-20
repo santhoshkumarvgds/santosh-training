@@ -20,12 +20,7 @@ module.exports = {
           allowNull: true,
           type: Sequelize.STRING,
         },
-      })
-      .then((x) =>
-        queryInterface.sequelize.query(`
-      insert into usertable(name,email,password) values('AdminRole','adminrole@admin.com','$2b$10$GQBuZ.K/V2Usejl0a.orSuf4SeUt4QnEgf71810LKMV3eMoKJzqlO');
-    `)
-      );
+      });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('usertable');

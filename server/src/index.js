@@ -8,7 +8,15 @@ const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 4000;
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
-const rateLimit = require("express-rate-limit");
+var CronJob = require("cron").CronJob;
+const Sequelize = require("sequelize");
+// const cron = require("node-cron");
+ const {
+   Worker,
+   isMainThread,
+   parentPort,
+   workerData,
+ } = require("worker_threads");
 app.use(express.json());
 app.use(express.static("uploads"));
 app.use(cookieParser());
@@ -26,17 +34,15 @@ app.use(
   })
 );
 
-app.use(function (err,req,res,next) {
+app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.json({
     status: "failed",
   });
 });
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
+
+
 
 //local module
 const { userAuth } = require("./routes/userAuth");
@@ -45,6 +51,7 @@ const { pendingapprovel } = require("./routes/pendingApprovel");
 const { acceptReject } = require("./routes/acceptRejectUser");
 const { addAdmin } = require("./routes/addAdmin");
 const { product } = require("./routes/product");
+const { userrole } = require("./models/database");
 
 app.use("/user", userAuth);
 
@@ -57,5 +64,36 @@ app.use("/user", acceptReject);
 app.use("/user", addAdmin);
 
 app.use("/user", product);
+
+var job = new CronJob(
+  "0 0 0 */2 * *",
+  function () {
+   userrole.update(
+     { status: "Reject", pendingrequest: "false" },
+     {
+       where: {
+         doj: {
+           [Sequelize.Op.between]: [
+             new Date(Date.now() - 48 * 3600 * 1000),
+             new Date(Date.now()),
+           ],
+         },
+         status: "pending",
+       },
+     }
+   );
+  console.log("Before two days pending approvel sellers are succesfully rejected");
+  },
+  null,
+  true
+);
+job.start();
+
+// cron.schedule("* * * * * *", () => {
+//   userrole.update(
+//     { status: "Reject", pendingrequest: "false" },
+//     { where: { email: req.body.email } }
+//   );
+// });
 
 app.listen(port, () => console.log(`started https://loacalhost:${port}`));

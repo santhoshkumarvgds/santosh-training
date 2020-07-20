@@ -24,12 +24,12 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING,
         },
-      })
-      .then((x) =>
-        queryInterface.sequelize.query(`
-      insert into userrole(email,role,pendingrequest,status) values('adminrole@admin.com','Admin','false','accept');
-    `)
-      );
+        doj: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: sequelize.fn('NOW'),
+        },
+      });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("userroles");

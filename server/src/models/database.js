@@ -63,6 +63,11 @@ const userrole = sequelize.define(
       allowNull: false,
       type: Sequelize.STRING,
     },
+    doj: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: sequelize.fn("NOW"),
+    },
   },
   {
     tableName: "userrole",
@@ -215,8 +220,26 @@ userrole.removeAttribute("id");
 userPermission.removeAttribute("id");
 productReview.removeAttribute("id");
 
-sequelize.sync({ force: false }).then(() => {
-  console.log("Tables created");
+sequelize.sync({ force: false }).then(async () => {
+  const email = "adminrole@admin.com";
+  const length = await users.findOne({
+    where: { email: email },
+  });
+  if (!length) {
+    const hash = "$2b$10$GQBuZ.K/V2Usejl0a.orSuf4SeUt4QnEgf71810LKMV3eMoKJzqlO"; //123
+    const adminInsert = await users.create({
+      name: "AdminRole",
+      email: email,
+      password: hash,
+    });
+    var dbUserRoleInsert = await userrole.create({
+      email: email,
+      role: "Admin",
+      pendingrequest: "false",
+      status: "Accept",
+    });
+    console.log("Defalut Admin Added");
+  }
 });
 
 //exports

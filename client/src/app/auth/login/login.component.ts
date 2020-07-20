@@ -30,12 +30,12 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/seller']);
     } else if (
       body.message === 'Approvel pending' &&
-      body.status !== 'reject'
+      body.status !== 'Reject'
     ) {
       this.router.navigate(['/pendingapprovel']);
     } else if (
       body.message === 'Approvel pending' &&
-      body.status === 'reject'
+      body.status === 'Reject'
     ) {
       alert("You're rejected by Admin!!!");
     } else {
