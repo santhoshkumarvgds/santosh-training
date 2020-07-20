@@ -1,8 +1,10 @@
 <div class="PendingRequstList">
   <form (submit)="changeInterval()">
-    <label>After how many days the pending approvel automaticaly rejected</label>
-    <input type="number" [(ngModel)]="intervel" />
-    <input type="submit" value="submit" id="submit">
+    <label
+      >After how many days the pending approvel automaticaly rejected</label
+    >
+    <input type="number" name="interval" [(ngModel)]="interval" />
+    <input type="submit" value="submit" id="submit" />
   </form>
   <p>PendingRequstList</p>
   <div class="table">
@@ -16,14 +18,14 @@
       </thead>
       <tbody key="tbody" *ngFor="let item of values">
         <tr key="{item}">
-          <td>{{item}}</td>
+          <td>{{ item }}</td>
           <td>
-            <a (click)="acceptreject(item,'Accept')">
+            <a (click)="acceptreject(item, 'Accept')">
               Accept
             </a>
           </td>
           <td>
-            <a (click)="acceptreject(item,'Reject')">
+            <a (click)="acceptreject(item, 'Reject')">
               Reject
             </a>
           </td>

@@ -8,7 +8,7 @@ const { users, userrole } = require("../models/database.js");
 const validuser = require("../middleware/checkvalid");
 const roleCheck = require("../middleware/roleCheck");
 
-const interval = 2;
+var interval = 2;
 
 router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
   userrole.update(
@@ -21,6 +21,7 @@ router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
 });
 
 router.post("/changeinterval", roleCheck("Admin"), async (req, res) => {
+  console.log("1");
   interval = req.params.interval;
   console.log(interval);
   res.json({

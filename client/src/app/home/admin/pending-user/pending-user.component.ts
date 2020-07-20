@@ -10,12 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PendingUserComponent implements OnInit {
   values: any = [];
-  interval: number = 2;
+  interval: number;
   constructor() {}
 
   async changeInterval() {
+    alert(this.interval);
     const response: any = await fetch(
-      'http://localhost:400/user/changeinterval?interval=' + this.interval,
+      'http://localhost:4000/user/changeinterval?interval=' + this.interval,
       {
         method: 'post',
         credentials: 'include',
@@ -27,22 +28,25 @@ export class PendingUserComponent implements OnInit {
   }
 
   async acceptreject(email, status) {
-     const response : any = await fetch('http://localhost:4000/user/acceptreject', {
-       method: 'post',
-       credentials: 'include',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({
-         email: email,
-         status: status,
-       }),
-     });
-     const data :any = await response.json();
-     if (data.status) {
-       alert(email+" was "+data.status);
-       this.values=this.values.filter((item) => item != email);
-     } else {
-       alert('Try again');
-     }
+    const response: any = await fetch(
+      'http://localhost:4000/user/acceptreject',
+      {
+        method: 'post',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          status: status,
+        }),
+      }
+    );
+    const data: any = await response.json();
+    if (data.status) {
+      alert(email + ' was ' + data.status);
+      this.values = this.values.filter((item) => item != email);
+    } else {
+      alert('Try again');
+    }
   }
 
   async ngOnInit() {
