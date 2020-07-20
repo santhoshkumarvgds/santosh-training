@@ -21,8 +21,8 @@ router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
 });
 
 router.post("/changeinterval", roleCheck("Admin"), async (req, res) => {
-  console.log("1");
-  interval = req.params.interval;
+  // console.log(interval);
+  interval = req.query.interval;
   console.log(interval);
   res.json({
     message: "interval successfully changed",
