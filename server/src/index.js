@@ -8,8 +8,6 @@ const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 4000;
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
-var CronJob = require("cron").CronJob;
-const Sequelize = require("sequelize");
 // const cron = require("node-cron");
  const {
    Worker,
@@ -51,7 +49,6 @@ const { pendingapprovel } = require("./routes/pendingApprovel");
 const { acceptReject } = require("./routes/acceptRejectUser");
 const { addAdmin } = require("./routes/addAdmin");
 const { product } = require("./routes/product");
-const { userrole } = require("./models/database");
 
 app.use("/user", userAuth);
 
@@ -65,29 +62,7 @@ app.use("/user", addAdmin);
 
 app.use("/user", product);
 
-var job = new CronJob(
-  "0 0 0 */2 * *",
-  function () {
-   userrole.update(
-     { status: "Reject", pendingrequest: "false" },
-     {
-       where: {
-         doj: {
-           [Sequelize.Op.between]: [
-             new Date(Date.now() - 48 * 3600 * 1000),
-             new Date(Date.now()),
-           ],
-         },
-         status: "pending",
-       },
-     }
-   );
-  console.log("Before two days pending approvel sellers are succesfully rejected");
-  },
-  null,
-  true
-);
-job.start();
+
 
 // cron.schedule("* * * * * *", () => {
 //   userrole.update(

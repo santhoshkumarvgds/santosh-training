@@ -10,7 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PendingUserComponent implements OnInit {
   values: any = [];
+  interval: number = 2;
   constructor() {}
+
+  async changeInterval() {
+    const response: any = await fetch(
+      'http://localhost:400/user/changeinterval?interval=' + this.interval,
+      {
+        method: 'post',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    const data = await response.json();
+    alert(data.message);
+  }
 
   async acceptreject(email, status) {
      const response : any = await fetch('http://localhost:4000/user/acceptreject', {
