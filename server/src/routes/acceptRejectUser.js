@@ -4,12 +4,11 @@ const router = express.Router();
 var CronJob = require("cron").CronJob;
 const Sequelize = require("sequelize");
 
-const { users, userrole } = require("../models/database.js");
+const { timing, userrole } = require("../models/database.js");
 const validuser = require("../middleware/checkvalid");
 const roleCheck = require("../middleware/roleCheck");
 
 var interval = 2;
-
 router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
   userrole.update(
     { status: req.body.status, pendingrequest: "false" },
@@ -21,13 +20,38 @@ router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
 });
 
 router.post("/changeinterval", roleCheck("Admin"), async (req, res) => {
-  // console.log(interval);
+  try{
+  timing.update(
+    {
+      value: interval,
+    },
+    {
+      where: {
+        operation: "interval",
+      },
+    }
+  );
   interval = req.query.interval;
-  console.log(interval);
+  // console.log(interval);
   res.json({
     message: "interval successfully changed",
   });
+  } catch (e) {
+    res.json({
+      message : "please try again and make you sure your connection!!!"
+    })
+}
 });
+
+(async function findInterval() {
+  const dbInterval = await timing.findOne({
+    where: { operation: "interval" },
+    attributes: ["value"],
+  });
+  interval = dbInterval.value;
+  console.log(interval);
+})();
+
 
 var job = new CronJob(
   "0 0 0 */" + interval + " * *",
@@ -47,7 +71,7 @@ var job = new CronJob(
       }
     );
     console.log(
-      "Before two days pending approvel sellers are succesfully rejected"
+      "pending approvel sellers are succesfully rejected"
     );
   },
   null,

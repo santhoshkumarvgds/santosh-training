@@ -215,10 +215,35 @@ const productReview = sequelize.define(
   }
 );
 
+const timing = sequelize.define(
+  "timing",
+  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
+    operation: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    value: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    tableName: "timing",
+    timestamps: false,
+  }
+);
+
 users.removeAttribute("id");
 userrole.removeAttribute("id");
 userPermission.removeAttribute("id");
 productReview.removeAttribute("id");
+
 
 sequelize.sync({ force: false }).then(async () => {
   const email = "adminrole@admin.com";
@@ -238,7 +263,11 @@ sequelize.sync({ force: false }).then(async () => {
       pendingrequest: "false",
       status: "Accept",
     });
-    console.log("Defalut Admin Added");
+    var dbIntervalInsert = await timing.create({
+      operation: "interval",
+      value: 2,
+    });
+    console.log("Defalut Admin & timing interval Added");
   }
 });
 
@@ -249,4 +278,5 @@ module.exports = {
   product: product,
   order: order,
   productReview: productReview,
+  timing: timing
 };

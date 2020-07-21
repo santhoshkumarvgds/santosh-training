@@ -14,8 +14,8 @@ export class PendingUserComponent implements OnInit {
   constructor() {}
 
   async changeInterval() {
-    alert(this.interval);
-    const response: any = await fetch(
+    if (this.interval > 0 && this.interval < 32) {
+        const response: any = await fetch(
       'http://localhost:4000/user/changeinterval?interval=' + this.interval,
       {
         method: 'post',
@@ -25,6 +25,10 @@ export class PendingUserComponent implements OnInit {
     );
     const data = await response.json();
     alert(data.message);
+    }
+    else {
+      alert("The date only between 1 to 31");
+    }
   }
 
   async acceptreject(email, status) {
