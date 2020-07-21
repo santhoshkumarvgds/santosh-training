@@ -1,5 +1,6 @@
 //core module
 const Sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 
 
 //Databse connection
@@ -252,23 +253,30 @@ sequelize.sync({ force: false }).then(async () => {
     where: { email: email },
   });
   if (!length) {
-    const hash = process.env.DEFAULT_ADMIN_PASSWORD;
-    const adminInsert = await users.create({
-      name: "AdminRole",
-      email: email,
-      password: hash,
+    bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 10, async (err, hash) => {
+      if (err) {
+        return res.json({
+          message: "error",
+        });
+      } else {
+        const adminInsert = await users.create({
+          name: "AdminRole",
+          email: email,
+          password: hash,
+        });
+        var dbUserRoleInsert = await userrole.create({
+          email: email,
+          role: "Admin",
+          pendingrequest: "false",
+          status: "Accept",
+        });
+        var dbIntervalInsert = await timing.create({
+          operation: "interval",
+          value: process.env.DEFAULT_INTERVAL,
+        });
+        console.log("Defalut Admin & timing interval Added");
+      }
     });
-    var dbUserRoleInsert = await userrole.create({
-      email: email,
-      role: "Admin",
-      pendingrequest: "false",
-      status: "Accept",
-    });
-    var dbIntervalInsert = await timing.create({
-      operation: "interval",
-      value: process.env.DEFAULT_INTERVAL,
-    });
-    console.log("Defalut Admin & timing interval Added");
   }
 });
 
