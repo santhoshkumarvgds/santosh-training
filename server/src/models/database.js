@@ -255,9 +255,7 @@ sequelize.sync({ force: false }).then(async () => {
   if (!length) {
     bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 10, async (err, hash) => {
       if (err) {
-        return res.json({
-          message: "error",
-        });
+        console.log(err);
       } else {
         const adminInsert = await users.create({
           name: "AdminRole",
