@@ -1,6 +1,7 @@
 //core module
 const Sequelize = require("sequelize");
 
+
 //Databse connection
 const sequelize = new Sequelize(
   process.env.DB,
@@ -246,12 +247,12 @@ productReview.removeAttribute("id");
 
 
 sequelize.sync({ force: false }).then(async () => {
-  const email = "adminrole@admin.com";
+  const email = process.env.DEFAULT_ADMIN_EMAIL;
   const length = await users.findOne({
     where: { email: email },
   });
   if (!length) {
-    const hash = "$2b$10$GQBuZ.K/V2Usejl0a.orSuf4SeUt4QnEgf71810LKMV3eMoKJzqlO"; //123
+    const hash = process.env.DEFAULT_ADMIN_PASSWORD;
     const adminInsert = await users.create({
       name: "AdminRole",
       email: email,
@@ -265,7 +266,7 @@ sequelize.sync({ force: false }).then(async () => {
     });
     var dbIntervalInsert = await timing.create({
       operation: "interval",
-      value: 2,
+      value: process.env.DEFAULT_INTERVAL,
     });
     console.log("Defalut Admin & timing interval Added");
   }

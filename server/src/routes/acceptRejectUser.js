@@ -8,7 +8,7 @@ const { timing, userrole } = require("../models/database.js");
 const validuser = require("../middleware/checkvalid");
 const roleCheck = require("../middleware/roleCheck");
 
-var interval = 2;
+var interval = process.env.DEFAULT_INTERVAL;
 router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
   userrole.update(
     { status: req.body.status, pendingrequest: "false" },
@@ -20,38 +20,41 @@ router.post("/acceptreject", roleCheck("Admin"), async (req, res, next) => {
 });
 
 router.post("/changeinterval", roleCheck("Admin"), async (req, res) => {
-  try{
-  timing.update(
-    {
-      value: interval,
-    },
-    {
-      where: {
-        operation: "interval",
+  try {
+    timing.update(
+      {
+        value: interval,
       },
-    }
-  );
-  interval = req.query.interval;
-  // console.log(interval);
-  res.json({
-    message: "interval successfully changed",
-  });
+      {
+        where: {
+          operation: "interval",
+        },
+      }
+    );
+    interval = req.query.interval;
+    // console.log(interval);
+    res.json({
+      message: "interval successfully changed",
+    });
   } catch (e) {
     res.json({
-      message : "please try again and make you sure your connection!!!"
-    })
-}
+      message: "please try again and make you sure your connection!!!",
+    });
+  }
 });
 
 (async function findInterval() {
-  const dbInterval = await timing.findOne({
-    where: { operation: "interval" },
-    attributes: ["value"],
-  });
-  interval = dbInterval.value;
+  try {
+    const dbInterval = await timing.findOne({
+      where: { operation: "interval" },
+      attributes: ["value"],
+    });
+    interval = dbInterval.value;
+  } catch (e) {
+    // interval = process.env.DEFAULT_INTERVAL;
+  }
   console.log(interval);
 })();
-
 
 var job = new CronJob(
   "0 0 0 */" + interval + " * *",
@@ -70,9 +73,7 @@ var job = new CronJob(
         },
       }
     );
-    console.log(
-      "pending approvel sellers are succesfully rejected"
-    );
+    console.log("pending approvel sellers are succesfully rejected");
   },
   null,
   true
