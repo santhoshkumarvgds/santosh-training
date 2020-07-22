@@ -247,36 +247,36 @@ userPermission.removeAttribute("id");
 productReview.removeAttribute("id");
 
 
-sequelize.sync({ force: false }).then(async () => {
-  const email = process.env.DEFAULT_ADMIN_EMAIL;
-  const length = await users.findOne({
-    where: { email: email },
-  });
-  if (!length) {
-    bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 10, async (err, hash) => {
-      if (err) {
-        console.log(err);
-      } else {
-        const adminInsert = await users.create({
-          name: "AdminRole",
-          email: email,
-          password: hash,
-        });
-        var dbUserRoleInsert = await userrole.create({
-          email: email,
-          role: "Admin",
-          pendingrequest: "false",
-          status: "Accept",
-        });
-        var dbIntervalInsert = await timing.create({
-          operation: "interval",
-          value: process.env.DEFAULT_INTERVAL,
-        });
-        console.log("Defalut Admin & timing interval Added");
-      }
-    });
-  }
-});
+// sequelize.sync({ force: false }).then(async () => {
+//   const email = process.env.DEFAULT_ADMIN_EMAIL;
+//   const length = await users.findOne({
+//     where: { email: email },
+//   });
+//   if (!length) {
+//     bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 10, async (err, hash) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         const adminInsert = await users.create({
+//           name: process.env.DEFAULT_ADMIN_NAME,
+//           email: email,
+//           password: hash,
+//         });
+//         var dbUserRoleInsert = await userrole.create({
+//           email: email,
+//           role: "Admin",
+//           pendingrequest: "false",
+//           status: "Accept",
+//         });
+//         var dbIntervalInsert = await timing.create({
+//           operation: "interval",
+//           value: process.env.DEFAULT_INTERVAL,
+//         });
+//         console.log("Defalut Admin & timing interval Added");
+//       }
+//     });
+//   }
+// });
 
 //exports
 module.exports = {

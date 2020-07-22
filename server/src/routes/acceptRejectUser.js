@@ -53,7 +53,7 @@ router.post("/changeinterval", roleCheck("Admin"), async (req, res) => {
   } catch (e) {
     // interval = process.env.DEFAULT_INTERVAL;
   }
-  console.log(interval);
+  // console.log(interval);
 })();
 
 var job = new CronJob(

@@ -62,13 +62,33 @@ app.use("/user", addAdmin);
 
 app.use("/user", product);
 
+// function fibonacci(n) {
+//   var n1 = 0, n2 = 1, n3;
+//   console.log("Start");
+//   console.log(n1+"\n"+n2);
+//   for (let i = 2; i < n + 1; i++) {
+//     n3 = n1 + n2;
+//     console.log(n3);
+//     n1=n2;
+//     n2 = n3;
+//   }
+// }
 
+// if (isMainThread) {
+//   let digit = 1000;
+//   let worker = new Worker(__filename, {
+//     workerData: { value: digit },
+//   });
 
-// cron.schedule("* * * * * *", () => {
-//   userrole.update(
-//     { status: "Reject", pendingrequest: "false" },
-//     { where: { email: req.body.email } }
-//   );
-// });
+//   worker.on("exit", () => {
+//     console.log("Thread exiting");
+//   });
+//   worker.on("message", (msg) => {
+//     console.log(msg);
+//   });
+// } else {
+//   fibonacci(workerData.value);
+//   parentPort.postMessage(isMainThread);
+// }
 
 app.listen(port, () => console.log(`started https://loacalhost:${port}`));
